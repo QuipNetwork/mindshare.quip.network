@@ -1,0 +1,28 @@
+[build]
+  command = "bun run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "bun vite"
+  framework = "#custom"
+  port = 8888
+  targetPort = 5173
+
+[dev.environment]
+  VITE_APP_URL = "http://localhost:8888"
+
+[context.production.environment]
+  VITE_APP_URL = "https://mindshare.quip.network"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, OPTIONS"
+    Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept"
