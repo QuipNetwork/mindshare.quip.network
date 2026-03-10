@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@theme {
+  --breakpoint-xs: 400px;
+}
+
 :root {
   --color-scheme-1--background: #0a0a0f;
   --color-scheme-1--text: #89839c;
@@ -11,6 +15,11 @@
 }
 
 @layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--brand-purple-medium) transparent;
+  }
+
   body {
     background-color: var(--color-scheme-1--background);
     color: #e0dce8;
@@ -48,7 +57,7 @@
     font-size: 0.875rem;
   }
 
-  .btn:hover {
+  .btn:not(.btn-active):hover {
     background-color: #1a0c2599;
     box-shadow:
       inset 0 1px 1px #5a4a74e6,

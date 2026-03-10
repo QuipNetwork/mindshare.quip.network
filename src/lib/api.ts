@@ -21,8 +21,7 @@ export async function fetchLeaderboard(params: {
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
     throw new Error(
-      (body as { error?: string }).error ||
-        `API error: ${response.status}`
+      (body as { error?: string }).error || `API error: ${response.status}`
     );
   }
 

@@ -11,11 +11,11 @@ export interface LeaderboardEntry {
 }
 
 export const TIME_PERIODS: Array<{ value: TimePeriod; label: string }> = [
-  { value: 1, label: '1D' },
+  // { value: 1, label: '1D' },
   { value: 7, label: '7D' },
   { value: 30, label: '30D' },
-  { value: 90, label: '90D' },
-  { value: 180, label: '180D' },
+  { value: 90, label: '3M' },
+  { value: 180, label: '6M' },
   { value: 365, label: '1Y' },
 ];
 
