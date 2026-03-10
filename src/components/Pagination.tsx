@@ -10,20 +10,18 @@ export function Pagination({ totalPages }: PaginationProps) {
   const pages = buildPageNumbers(page, totalPages);
 
   return (
-    <div className="mt-4 flex items-center justify-center gap-1">
-      <button
-        className="btn"
-        onClick={() => setPage(page - 1)}
-        disabled={page <= 1}
-      >
-        Prev
-      </button>
+    <div className="mt-4 flex items-center justify-center gap-1 flex-wrap">
+      {page > 1 && (
+        <button className="btn" onClick={() => setPage(page - 1)}>
+          Prev
+        </button>
+      )}
 
       {pages.map((p, i) =>
         p === null ? (
           <span
             key={`ellipsis-${i}`}
-            className="px-2 text-[var(--color-scheme-1--text)]"
+            className="px-2 text-(--color-scheme-1--text)"
           >
             ...
           </span>
@@ -38,13 +36,11 @@ export function Pagination({ totalPages }: PaginationProps) {
         )
       )}
 
-      <button
-        className="btn"
-        onClick={() => setPage(page + 1)}
-        disabled={page >= totalPages}
-      >
-        Next
-      </button>
+      {page < totalPages && (
+        <button className="btn" onClick={() => setPage(page + 1)}>
+          Next
+        </button>
+      )}
     </div>
   );
 }

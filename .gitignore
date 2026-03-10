@@ -31,3 +31,6 @@ dist-ssr
 #bun
 bun.lock
 bun.lockb
+
+#npm
+package-lock.json

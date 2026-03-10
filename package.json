@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@netlify/blobs": "^8.2.0",
@@ -18,8 +19,8 @@
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-hot-toast": "^2.5.2",
-    "react-router-dom": "^7.4.0",
     "tailwindcss": "^4.0.17",
+    "wouter": "^3.9.0",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
