@@ -1,37 +1,39 @@
 import { create } from 'zustand';
 import { fetchLeaderboard } from '@/lib/api';
-import type { TimePeriod, LeaderboardEntry } from '@/lib/types';
+import type {
+  LeaderboardEntryMerged,
+  LeaderboardEntryRanked,
+} from '@/lib/types';
 import { ITEMS_PER_PAGE } from '@/lib/types';
+import { calculateRanks } from '@/lib/leaderboard';
+
+export type SortBy = 'yearly' | 'weekly';
 
 interface LeaderboardState {
-  entries: LeaderboardEntry[];
-  period: TimePeriod;
+  entries: LeaderboardEntryMerged[];
   page: number;
   loading: boolean;
   error: string | null;
-  privateIds: string;
-  excludedIds: string;
   searchQuery: string;
-  filteredEntries: () => LeaderboardEntry[];
-  pageEntries: () => LeaderboardEntry[];
+  sortBy: SortBy;
+  filteredEntries: () => LeaderboardEntryMerged[];
+  rankedEntries: () => LeaderboardEntryRanked[];
+  pageEntries: () => LeaderboardEntryRanked[];
+  topMindshare: () => number;
   totalPages: () => number;
-  setPeriod: (period: TimePeriod) => void;
   setPage: (page: number) => void;
-  setPrivateIds: (ids: string) => void;
-  setExcludedIds: (ids: string) => void;
   setSearchQuery: (query: string) => void;
+  setSortBy: (sortBy: SortBy) => void;
   fetch: () => Promise<void>;
 }
 
 export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   entries: [],
-  period: 7,
   page: 1,
   loading: false,
   error: null,
-  privateIds: '',
-  excludedIds: '',
   searchQuery: '',
+  sortBy: 'yearly' as SortBy,
 
   filteredEntries: () => {
     const { entries, searchQuery } = get();
@@ -40,15 +42,19 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
     return entries.filter(
       (e) =>
         e.x_username.toLowerCase().includes(q) ||
-        e.x_display_name.toLowerCase().includes(q),
+        e.x_display_name.toLowerCase().includes(q)
     );
   },
 
+  rankedEntries: () => {
+    return calculateRanks(get().filteredEntries(), get().sortBy);
+  },
+
   pageEntries: () => {
-    const { filteredEntries, page } = get();
-    const filtered = filteredEntries();
+    const { rankedEntries, page } = get();
+    const entries = rankedEntries();
     const start = (page - 1) * ITEMS_PER_PAGE;
-    return filtered.slice(start, start + ITEMS_PER_PAGE);
+    return entries.slice(start, start + ITEMS_PER_PAGE);
   },
 
   totalPages: () => {
@@ -56,29 +62,26 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
     return Math.ceil(filteredEntries().length / ITEMS_PER_PAGE);
   },
 
-  setPeriod: (period) => {
-    set({ period, page: 1 });
-    get().fetch();
+  topMindshare: () => {
+    const entries = get().rankedEntries();
+    const topMindshare =
+      (entries[0]?.mindshare_percent?.yearly ||
+        entries[0]?.mindshare_percent?.weekly) ??
+      0;
+    return topMindshare;
   },
 
   setPage: (page) => set({ page }),
 
-  setPrivateIds: (ids) => set({ privateIds: ids }),
-
-  setExcludedIds: (ids) => set({ excludedIds: ids }),
-
   setSearchQuery: (query) => set({ searchQuery: query, page: 1 }),
 
+  setSortBy: (sortBy) => set({ sortBy, page: 1 }),
+
   fetch: async () => {
-    const { period, privateIds, excludedIds } = get();
     set({ loading: true, error: null });
 
     try {
-      const entries = await fetchLeaderboard({
-        period,
-        privateIds: privateIds || undefined,
-        excludedIds: excludedIds || undefined,
-      });
+      const entries = await fetchLeaderboard();
       set({ entries, loading: false, page: 1 });
     } catch (err: unknown) {
       const message =
