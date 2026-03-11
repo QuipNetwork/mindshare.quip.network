@@ -3,7 +3,7 @@ import { ProgressBar } from './ProgressBar';
 import { RewardBadge } from './RewardBadge';
 import { LeaderboardEntryRanked } from '@/lib/types';
 
-const MEDALS = ['', '🥇', '🥈', '🥉'];
+const MEDALS = ['🥇', '🥈', '🥉'];
 
 interface LeaderboardRowProps {
   entry: LeaderboardEntryRanked;
@@ -11,7 +11,7 @@ interface LeaderboardRowProps {
 }
 
 function RankWithMedal({ rank }: { rank: number }) {
-  const medal = rank <= 3 ? MEDALS[rank] : null;
+  const medal = rank < 3 ? MEDALS[rank] : null;
 
   if (medal) return <span className="text-lg min-w-8">{medal}</span>;
   else return <span className="min-w-8">{rank + 1}</span>;
