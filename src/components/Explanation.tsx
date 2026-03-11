@@ -1,6 +1,8 @@
+import { SidebarCard } from '@/components/SidebarCard';
+
 export function Explanation() {
   return (
-    <div className="gradient-diagonal mx-auto max-w-md rounded-xl border border-(--brand-purple-medium)/40 p-4 text-left text-sm">
+    <SidebarCard>
       <h3 className="mb-3 font-semibold text-white">How It Works</h3>
       <ol className="list-decimal space-y-2 pl-4 text-(--color-scheme-1--text)">
         <li>
@@ -41,6 +43,6 @@ export function Explanation() {
         $QUIP rewards are for Season 1. Season 1 ends when the token generation
         event takes place.
       </p>
-    </div>
+    </SidebarCard>
   );
 }

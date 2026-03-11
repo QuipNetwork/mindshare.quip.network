@@ -2,6 +2,7 @@ import { Hero } from '@/components/Hero';
 import { FilterControls } from '@/components/FilterControls';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
 import { Explanation } from '@/components/Explanation';
+import { RewardsTable } from '@/components/RewardsTable';
 import { useLeaderboardStore } from '@/store/leaderboard';
 import { onMounted } from '@/hooks';
 
@@ -20,8 +21,9 @@ export function LeaderboardPage() {
         <div className="min-w-0 flex-1">
           <LeaderboardTable />
         </div>
-        <aside className="w-full lg:w-72 shrink-0">
+        <aside className="flex w-full flex-col gap-4 lg:w-72 shrink-0">
           <Explanation />
+          <RewardsTable />
         </aside>
       </div>
     </>
