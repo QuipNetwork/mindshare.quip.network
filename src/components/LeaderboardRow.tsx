@@ -1,32 +1,44 @@
-import type { LeaderboardEntry } from '@/lib/types';
 import { formatPercent, getPointsForRank, QUIP_REWARDS } from '@/lib/format';
 import { ProgressBar } from './ProgressBar';
 import { RewardBadge } from './RewardBadge';
+import { LeaderboardEntryRanked } from '@/lib/types';
 
 const MEDALS = ['', '🥇', '🥈', '🥉'];
 
 interface LeaderboardRowProps {
-  entry: LeaderboardEntry;
-  rank: number;
+  entry: LeaderboardEntryRanked;
   topMindshare: number;
 }
 
-export function LeaderboardRow({
-  entry,
-  rank,
-  topMindshare,
-}: LeaderboardRowProps) {
+function RankWithMedal({ rank }: { rank: number }) {
   const medal = rank <= 3 ? MEDALS[rank] : null;
 
-  const progress =
-    topMindshare > 0 ? (entry.mindshare_percent / topMindshare) * 100 : 0;
+  if (medal) return <span className="text-lg min-w-8">{medal}</span>;
+  else return <span className="min-w-8">{rank + 1}</span>;
+}
 
-  const quip$ = getPointsForRank(rank, QUIP_REWARDS);
+export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
+  const progress =
+    topMindshare > 0
+      ? (entry.mindshare_percent.yearly / topMindshare) * 100
+      : 0;
+
+  const quip$ = getPointsForRank(entry.rank.yearly, QUIP_REWARDS);
 
   return (
     <tr className="border-b border-(--brand-purple-medium)/20 transition-colors hover:bg-white/2">
       <td className="py-3 pl-4 pr-2 text-center text-sm font-medium text-(--color-scheme-1--text)">
-        {medal ? <span className="text-lg">{medal}</span> : <span>{rank}</span>}
+        <div className="flex flex-row items-center justify-center gap-2">
+          <RankWithMedal rank={entry.rank.yearly} />
+
+          {quip$ ? (
+            <RewardBadge variant="pink">
+              <b>${quip$.toLocaleString()}</b>
+            </RewardBadge>
+          ) : (
+            ''
+          )}
+        </div>
       </td>
 
       <td className="py-3 px-2">
@@ -61,26 +73,22 @@ export function LeaderboardRow({
 
       <td className="py-3 pl-2 pr-2 space-y-1">
         <div className="w-14 text-xs font-mono text-(--color-scheme-1--text)">
-          {formatPercent(entry.mindshare_percent)}
+          {formatPercent(entry.mindshare_percent.yearly)}
         </div>
 
         <ProgressBar progress={progress} />
       </td>
 
-      <td className="py-3 px-2 text-right">
-        <RewardBadge variant="cyan">
-          {getPointsForRank(rank).toLocaleString()}
-        </RewardBadge>
-      </td>
+      <td className="py-3 px-2">
+        <div className="flex flex-row items-center justify-center gap-4">
+          <span className="text-sm font-medium text-(--color-scheme-1--text)">
+            {entry.rank.weekly + 1}
+          </span>
 
-      <td className="py-3 pl-2 pr-4 text-right">
-        {quip$ ? (
-          <RewardBadge variant="pink">
-            <b>${quip$.toLocaleString()}</b>
+          <RewardBadge variant="cyan">
+            {getPointsForRank(entry.rank.weekly).toLocaleString()}
           </RewardBadge>
-        ) : (
-          <span className="text-sm text-(--color-scheme-1--text)">-</span>
-        )}
+        </div>
       </td>
     </tr>
   );

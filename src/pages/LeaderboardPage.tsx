@@ -1,5 +1,4 @@
 import { Hero } from '@/components/Hero';
-import { TimePeriodTabs } from '@/components/TimePeriodTabs';
 import { FilterControls } from '@/components/FilterControls';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
 import { Explanation } from '@/components/Explanation';
@@ -16,7 +15,6 @@ export function LeaderboardPage() {
       <Hero />
       <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <FilterControls />
-        <TimePeriodTabs />
       </div>
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="min-w-0 flex-1">
