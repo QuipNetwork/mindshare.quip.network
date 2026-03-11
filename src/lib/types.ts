@@ -10,6 +10,29 @@ export interface LeaderboardEntry {
   mindshare_percent: number;
 }
 
+export interface LeaderboardEntryMerged {
+  x_username: string;
+  x_user_id: string;
+  x_display_name: string;
+  x_avatar_url: string | null;
+  x_link: string;
+  mindshare_score: {
+    weekly: number;
+    yearly: number;
+  };
+  mindshare_percent: {
+    weekly: number;
+    yearly: number;
+  };
+}
+
+export interface LeaderboardEntryRanked extends LeaderboardEntryMerged {
+  rank: {
+    weekly: number;
+    yearly: number;
+  };
+}
+
 export const TIME_PERIODS: Array<{ value: TimePeriod; label: string }> = [
   // { value: 1, label: '1D' },
   { value: 7, label: '7D' },
