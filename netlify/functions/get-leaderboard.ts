@@ -4,14 +4,14 @@ import { isRespondable, requireMethod } from '../../src/lib/http';
 
 const VALID_PERIODS = new Set([1, 7, 30, 90, 180, 365]);
 
-const TTL_MS: Record<number, number> = {
+const TTL_MS: Record<number, number> = Object.freeze({
   1: 5 * 60 * 1000,
   7: 60 * 60 * 1000,
   30: 6 * 60 * 60 * 1000,
   90: 6 * 60 * 60 * 1000,
   180: 6 * 60 * 60 * 1000,
   365: 6 * 60 * 60 * 1000,
-};
+});
 
 const API_BASE =
   'https://uat-mindshare.nucleus.codes/v1/metrics/external/mindshare-leaderboard-snapshots';

@@ -1,6 +1,7 @@
 import type { LeaderboardEntry } from '@/lib/types';
-import { formatPercent, formatScore } from '@/lib/format';
+import { formatPercent, getPointsForRank, QUIP_REWARDS } from '@/lib/format';
 import { ProgressBar } from './ProgressBar';
+import { RewardBadge } from './RewardBadge';
 
 const MEDALS = ['', '🥇', '🥈', '🥉'];
 
@@ -19,6 +20,8 @@ export function LeaderboardRow({
 
   const progress =
     topMindshare > 0 ? (entry.mindshare_percent / topMindshare) * 100 : 0;
+
+  const quip$ = getPointsForRank(rank, QUIP_REWARDS);
 
   return (
     <tr className="border-b border-(--brand-purple-medium)/20 transition-colors hover:bg-white/2">
@@ -64,12 +67,20 @@ export function LeaderboardRow({
         <ProgressBar progress={progress} />
       </td>
 
-      <td className="py-3 px-2 text-right text-sm font-mono text-(--color-scheme-1--text)">
-        {formatScore(entry.mindshare_score)}
+      <td className="py-3 px-2 text-right">
+        <RewardBadge variant="cyan">
+          {getPointsForRank(rank).toLocaleString()}
+        </RewardBadge>
       </td>
 
-      <td className="py-3 pl-2 pr-4 text-right text-sm font-mono text-(--color-scheme-1--text)">
-        TBD
+      <td className="py-3 pl-2 pr-4 text-right">
+        {quip$ ? (
+          <RewardBadge variant="pink">
+            <b>${quip$.toLocaleString()}</b>
+          </RewardBadge>
+        ) : (
+          <span className="text-sm text-(--color-scheme-1--text)">-</span>
+        )}
       </td>
     </tr>
   );
