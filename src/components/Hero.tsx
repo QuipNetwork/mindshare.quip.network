@@ -1,3 +1,5 @@
+import { Countdown } from '@/components/Countdown';
+
 export function Hero() {
   return (
     <section className="mb-8 text-center">
@@ -16,6 +18,8 @@ export function Hero() {
         </a>
         . Climb the ranks to earn rewards.
       </p>
+
+      <Countdown />
     </section>
   );
 }
