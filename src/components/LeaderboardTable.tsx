@@ -29,16 +29,16 @@ export function LeaderboardTable() {
           <thead>
             <tr className="border-b border-(--brand-purple-medium)/40 text-xs uppercase tracking-wider text-(--color-scheme-1--text)">
               <th
-                className="py-3 pl-4 pr-2 text-center font-medium cursor-pointer select-none"
+                className="py-3 pl-4 pr-2 text-left font-medium cursor-pointer select-none"
                 onClick={() => setSortBy('yearly')}
               >
                 Season Rank
                 <ArrowDown visible={sortBy === 'yearly'} />
               </th>
               <th className="py-3 px-2 text-left font-medium">User</th>
-              <th className="py-3 px-2 text-right font-medium">Mindshare</th>
+              <th className="py-3 px-2 text-left font-medium">Mindshare</th>
               <th
-                className="py-3 px-2 text-center font-medium cursor-pointer select-none"
+                className="py-3 px-2 text-left font-medium cursor-pointer select-none"
                 onClick={() => setSortBy('weekly')}
               >
                 Weekly Rank
