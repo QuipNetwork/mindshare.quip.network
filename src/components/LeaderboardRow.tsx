@@ -23,12 +23,12 @@ export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
       ? (entry.mindshare_percent.yearly / topMindshare) * 100
       : 0;
 
-  const quip$ = getPointsForRank(entry.rank.yearly, QUIP_REWARDS);
+  const quip$ = getPointsForRank(entry.rank.yearly + 1, QUIP_REWARDS);
 
   return (
     <tr className="border-b border-(--brand-purple-medium)/20 transition-colors hover:bg-white/2">
       <td className="py-3 pl-4 pr-2 text-center text-sm font-medium text-(--color-scheme-1--text)">
-        <div className="flex flex-row items-center justify-center gap-2">
+        <div className="flex flex-row items-center justify-between">
           <RankWithMedal rank={entry.rank.yearly} />
 
           {quip$ ? (
@@ -71,7 +71,7 @@ export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
         </a>
       </td>
 
-      <td className="py-3 pl-2 pr-2 space-y-1">
+      <td className="py-3 pl-2 pr-8 space-y-1">
         <div className="w-14 text-xs font-mono text-(--color-scheme-1--text)">
           {formatPercent(entry.mindshare_percent.yearly)}
         </div>
@@ -80,13 +80,13 @@ export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
       </td>
 
       <td className="py-3 px-2">
-        <div className="flex flex-row items-center justify-center gap-4">
+        <div className="flex flex-row items-center justify-between">
           <span className="text-sm font-medium text-(--color-scheme-1--text)">
             {entry.rank.weekly + 1}
           </span>
 
           <RewardBadge variant="cyan">
-            {getPointsForRank(entry.rank.weekly).toLocaleString()}
+            {getPointsForRank(entry.rank.weekly + 1).toLocaleString()}
           </RewardBadge>
         </div>
       </td>

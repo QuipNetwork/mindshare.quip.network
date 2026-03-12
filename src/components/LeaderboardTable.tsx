@@ -36,7 +36,9 @@ export function LeaderboardTable() {
                 <ArrowDown visible={sortBy === 'yearly'} />
               </th>
               <th className="py-3 px-2 text-left font-medium">User</th>
-              <th className="py-3 px-2 text-left font-medium">Mindshare</th>
+              <th className="py-3 px-2 pr-8 text-left font-medium">
+                Mindshare
+              </th>
               <th
                 className="py-3 px-2 text-left font-medium cursor-pointer select-none"
                 onClick={() => setSortBy('weekly')}

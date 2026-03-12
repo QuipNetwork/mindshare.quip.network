@@ -11,7 +11,7 @@ interface RewardBadgeProps {
 export function RewardBadge({ children, variant }: RewardBadgeProps) {
   return (
     <span
-      className={`inline-block rounded-md px-8 py-2 text-xs font-mono font-medium ${VARIANTS[variant]}`}
+      className={`inline-block rounded-md w-20 text-center py-2 text-xs font-mono font-medium ${VARIANTS[variant]}`}
     >
       {children}
     </span>
