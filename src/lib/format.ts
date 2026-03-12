@@ -20,7 +20,7 @@ export const RANK_REWARDS: Map<number, number> = new Map([
   [100, 600],
   [250, 400],
   [500, 300],
-  [Infinity, 200],
+  [1000, 200],
 ]);
 
 export const QUIP_REWARDS: Map<number, number> = new Map([
