@@ -30,7 +30,7 @@ export function RewardsTable() {
       <h3 className="mb-3 font-semibold text-white">Rewards</h3>
 
       <p className="mb-2 text-xs font-medium uppercase tracking-wider text-(--color-scheme-1--text)">
-        Weekly Points
+        Weekly Mindshare Points
       </p>
       <table className="mb-4 w-full text-xs">
         <thead>
@@ -55,7 +55,7 @@ export function RewardsTable() {
       </table>
 
       <p className="mb-2 text-xs font-medium uppercase tracking-wider text-(--color-scheme-1--text)">
-        $QUIP Season 1
+        Season 1 $QUIP Prizes
       </p>
       <table className="w-full text-xs">
         <thead>
