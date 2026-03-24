@@ -19,20 +19,20 @@ function RankWithMedal({ rank }: { rank: number }) {
   else return <span className="min-w-8">{rank + 1}</span>;
 }
 
-export function LeaderboardRow({
-  entry,
-  topMindshare,
-  sortBy,
-}: LeaderboardRowProps) {
+export function LeaderboardRow({ entry, topMindshare, sortBy }: LeaderboardRowProps) {
   const mindshare = entry.mindshare_percent[sortBy];
   const progress = topMindshare > 0 ? (mindshare / topMindshare) * 100 : 0;
 
-  const quip$ = getPointsForRank(entry.rank.yearly + 1, QUIP_REWARDS);
+  const rank = entry.rank[sortBy];
+  const isWeekly = sortBy === 'weekly';
+  const rewards = isWeekly
+    ? getPointsForRank(rank + 1)
+    : getPointsForRank(rank + 1, QUIP_REWARDS);
 
   return (
     <tr className="border-b border-(--brand-purple-medium)/20 transition-colors hover:bg-white/2">
       <td className="py-3 pl-4 pr-2 text-center text-sm font-medium text-(--color-scheme-1--text)">
-        <RankWithMedal rank={entry.rank.yearly} />
+        <RankWithMedal rank={rank} />
       </td>
 
       <td className="py-3 px-2">
@@ -73,26 +73,18 @@ export function LeaderboardRow({
         <ProgressBar progress={progress} />
       </td>
 
-      <td className="py-3 px-2 text-sm text-(--color-scheme-1--text)">
-        {quip$ ? (
-          <RewardBadge variant="pink">
-            <b>${quip$.toLocaleString()}</b>
+      <td className="py-3 px-2 text-center">
+        {rewards ? (
+          <RewardBadge variant={isWeekly ? 'cyan' : 'pink'}>
+            {isWeekly ? (
+              rewards.toLocaleString()
+            ) : (
+              <b>${rewards.toLocaleString()}</b>
+            )}
           </RewardBadge>
         ) : (
           ''
         )}
-      </td>
-
-      <td className="py-3 px-2">
-        <div className="flex flex-row items-center justify-between">
-          <span className="text-sm font-medium text-(--color-scheme-1--text) pr-2">
-            {entry.rank.weekly + 1}
-          </span>
-
-          <RewardBadge variant="cyan">
-            {getPointsForRank(entry.rank.weekly + 1).toLocaleString()}
-          </RewardBadge>
-        </div>
       </td>
     </tr>
   );
