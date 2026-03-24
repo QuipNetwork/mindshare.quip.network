@@ -30,15 +30,15 @@ export function LeaderboardTable() {
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-(--brand-purple-medium)/40 text-xs uppercase tracking-wider text-(--color-scheme-1--text)">
-              <th className="py-3 pl-4 pr-2 text-left font-medium">
-                {isWeekly ? 'Weekly Rank' : 'Season Rank'}
+              <th className="py-3 pl-2 pr-1 sm:pl-4 sm:pr-2 text-left font-medium">
+                Rank
               </th>
-              <th className="py-3 px-2 text-left font-medium">User</th>
-              <th className="py-3 px-2 pr-8 text-left font-medium">
+              <th className="py-3 px-1 sm:px-2 text-left font-medium">User</th>
+              <th className="py-3 px-1 sm:px-2 sm:pr-8 text-left font-medium">
                 Mindshare
               </th>
-              <th className="py-3 px-2 text-center font-medium">
-                {isWeekly ? 'Weekly Rewards' : 'Season Rewards'}
+              <th className="py-3 px-1 sm:px-2 text-center font-medium">
+                {isWeekly ? 'Points' : '$QUIP'}
               </th>
             </tr>
           </thead>

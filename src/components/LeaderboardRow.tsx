@@ -19,7 +19,11 @@ function RankWithMedal({ rank }: { rank: number }) {
   else return <span className="min-w-8">{rank + 1}</span>;
 }
 
-export function LeaderboardRow({ entry, topMindshare, sortBy }: LeaderboardRowProps) {
+export function LeaderboardRow({
+  entry,
+  topMindshare,
+  sortBy,
+}: LeaderboardRowProps) {
   const mindshare = entry.mindshare_percent[sortBy];
   const progress = topMindshare > 0 ? (mindshare / topMindshare) * 100 : 0;
 
@@ -31,16 +35,16 @@ export function LeaderboardRow({ entry, topMindshare, sortBy }: LeaderboardRowPr
 
   return (
     <tr className="border-b border-(--brand-purple-medium)/20 transition-colors hover:bg-white/2">
-      <td className="py-3 pl-4 pr-2 text-center text-sm font-medium text-(--color-scheme-1--text)">
+      <td className="py-3 pl-2 pr-1 sm:pl-4 sm:pr-2 text-center text-sm font-medium text-(--color-scheme-1--text)">
         <RankWithMedal rank={rank} />
       </td>
 
-      <td className="py-3 px-2">
+      <td className="py-3 px-1 sm:px-2 max-w-32 sm:max-w-none">
         <a
           href={entry.x_link}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-3 text-white no-underline hover:text-(--brand-cyan)"
+          className="flex items-center gap-3 text-white no-underline hover:text-(--brand-cyan) min-w-0"
         >
           {entry.x_avatar_url ? (
             <img
@@ -65,7 +69,7 @@ export function LeaderboardRow({ entry, topMindshare, sortBy }: LeaderboardRowPr
         </a>
       </td>
 
-      <td className="py-3 pl-2 pr-8 space-y-1">
+      <td className="py-3 px-1 sm:pl-2 sm:pr-8 space-y-1">
         <div className="w-14 text-xs font-mono text-(--color-scheme-1--text)">
           {formatPercent(mindshare)}
         </div>
@@ -73,7 +77,7 @@ export function LeaderboardRow({ entry, topMindshare, sortBy }: LeaderboardRowPr
         <ProgressBar progress={progress} />
       </td>
 
-      <td className="py-3 px-2 text-center">
+      <td className="py-3 px-1 sm:px-2 text-center">
         {rewards ? (
           <RewardBadge variant={isWeekly ? 'cyan' : 'pink'}>
             {isWeekly ? (
