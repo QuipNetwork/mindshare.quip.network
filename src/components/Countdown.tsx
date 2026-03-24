@@ -59,28 +59,31 @@ export function Countdown() {
   const { days, hours, minutes, seconds } = useCountdown(getNextWave);
 
   return (
-    <div className="mt-5">
-      <p className="mb-2 text-xs uppercase tracking-widest text-(--color-scheme-1--text)">
-        Next point wave in
-      </p>
-      <div className="inline-flex gap-3">
-        <TimeUnit value={days} label="Days" />
-        <TimeUnit value={hours} label="Hrs" />
-        <TimeUnit value={minutes} label="Min" />
-        <TimeUnit value={seconds} label="Sec" />
+    <>
+      <div className="mb-1 text-[10px] font-medium uppercase tracking-[1.5px] text-text-muted">
+        Next Point Wave
       </div>
-    </div>
+      <div className="flex items-center gap-1">
+        <CdGroup value={days} unit="days" />
+        <span className="self-start text-lg font-light leading-[1.3] text-text-muted">:</span>
+        <CdGroup value={hours} unit="hrs" />
+        <span className="self-start text-lg font-light leading-[1.3] text-text-muted">:</span>
+        <CdGroup value={minutes} unit="min" />
+        <span className="self-start text-lg font-light leading-[1.3] text-text-muted">:</span>
+        <CdGroup value={seconds} unit="sec" />
+      </div>
+    </>
   );
 }
 
-function TimeUnit({ value, label }: { value: number; label: string }) {
+function CdGroup({ value, unit }: { value: number; unit: string }) {
   return (
-    <div className="flex flex-col items-center rounded-lg border border-(--brand-purple-medium)/30 bg-(--brand-purple-dark)/40 px-3 py-2 min-w-14">
-      <span className="text-2xl font-bold tabular-nums text-white">
+    <div className="flex min-w-8 flex-col items-center">
+      <span className="font-mono text-xl font-medium leading-[1.2] tabular-nums text-white">
         {String(value).padStart(2, '0')}
       </span>
-      <span className="text-[0.65rem] uppercase tracking-wider text-(--color-scheme-1--text)">
-        {label}
+      <span className="mt-0.5 text-[9px] font-semibold uppercase tracking-[1px] text-text-muted">
+        {unit}
       </span>
     </div>
   );

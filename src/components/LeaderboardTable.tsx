@@ -4,15 +4,17 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { Pagination } from '@/components/Pagination';
 
+const TH = 'py-3.5 px-4 text-right text-[11px] font-semibold uppercase tracking-[1px] text-text-muted transition-opacity duration-250';
+
 export function LeaderboardTable() {
   const store = useLeaderboardStore();
-  const { entries, loading, error, sortBy, setSortBy, fetch: refetch } = store;
+  const { entries, loading, error, sortBy, fetch: refetch } = store;
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage message={error} onRetry={refetch} />;
   if (entries.length === 0) {
     return (
-      <p className="py-12 text-center text-(--color-scheme-1--text)">
+      <p className="py-12 text-center text-text">
         No leaderboard data available for this period.
       </p>
     );
@@ -22,50 +24,47 @@ export function LeaderboardTable() {
   const totalPages = store.totalPages();
   const topMindshare = store.topMindshare();
 
+  const dimSeason = sortBy === 'weekly';
+  const dimWeekly = sortBy === 'yearly';
+
   return (
     <div>
-      <div className="overflow-x-auto rounded-xl border border-(--brand-purple-medium)/30">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-(--brand-purple-medium)/40 text-xs uppercase tracking-wider text-(--color-scheme-1--text)">
-              <th
-                className="py-3 pl-4 pr-2 text-left font-medium cursor-pointer select-none"
-                onClick={() => setSortBy('yearly')}
-              >
-                Season Rank
-                <ArrowDown visible={sortBy === 'yearly'} />
-              </th>
-              <th className="py-3 px-2 text-left font-medium">User</th>
-              <th className="py-3 px-2 pr-8 text-left font-medium">
-                Mindshare
-              </th>
-              <th
-                className="py-3 px-2 text-left font-medium cursor-pointer select-none"
-                onClick={() => setSortBy('weekly')}
-              >
-                Weekly Rank
-                <ArrowDown visible={sortBy === 'weekly'} />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {pagedEntries.map((entry) => (
-              <LeaderboardRow
-                key={entry.x_user_id}
-                entry={entry}
-                topMindshare={topMindshare}
-              />
-            ))}
-          </tbody>
-        </table>
+      <div className="animate-fade-up delay-[250ms] overflow-hidden rounded-2xl border border-white/6 bg-white/3">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px] border-collapse">
+            <thead>
+              <tr className="border-b border-white/6 bg-white/[0.015]">
+                <th className="py-3.5 pl-5 pr-4 text-left text-[11px] font-semibold uppercase tracking-[1px] text-text-muted">
+                  User
+                </th>
+                <th className="py-3.5 px-4 text-left text-[11px] font-semibold uppercase tracking-[1px] text-text-muted">
+                  Mindshare
+                </th>
+                <th className={`${TH} ${dimSeason ? 'opacity-40' : 'opacity-100'}`}>
+                  Season Rank
+                </th>
+                <th className={`${TH} ${dimWeekly ? 'opacity-40' : 'opacity-100'}`}>
+                  Weekly Rank
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {pagedEntries.map((entry, index) => (
+                <LeaderboardRow
+                  key={entry.x_user_id}
+                  entry={entry}
+                  topMindshare={topMindshare}
+                  isFirst={index === 0 && store.page === 1}
+                  dimSeason={dimSeason}
+                  dimWeekly={dimWeekly}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {totalPages > 1 && <Pagination totalPages={totalPages} />}
     </div>
   );
-}
-
-function ArrowDown({ visible }: { visible: boolean }) {
-  if (!visible) return '';
-  return <span className="ml-1">&#9660;</span>;
 }
