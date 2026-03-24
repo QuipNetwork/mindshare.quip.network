@@ -24,66 +24,81 @@ const seasonRewards = [
   ['101–315', '$100'],
 ] as const;
 
-export function RewardsTable() {
+export function SeasonRewardsCard() {
   return (
     <SidebarCard>
-      <h3 className="mb-3 font-semibold text-white">Rewards</h3>
+      <h3 className="mb-4 text-[15px] font-bold text-white">
+        Season 1 $QUIP Token Prizes
+      </h3>
+      <div className="mb-4 text-xs leading-snug text-text-muted">
+        Top 315 &middot; $100k in $QUIP at TGE
+      </div>
+      <RewardTable
+        headers={['Rank', 'Reward']}
+        rows={seasonRewards}
+        footer={['Total', '$100,000']}
+      />
+    </SidebarCard>
+  );
+}
 
-      <p className="mb-2 text-xs font-medium uppercase tracking-wider text-(--color-scheme-1--text)">
-        Weekly Mindshare Points
-      </p>
-      <table className="mb-4 w-full text-xs">
-        <thead>
-          <tr className="border-b border-(--brand-purple-medium)/30 text-(--color-scheme-1--text)">
-            <th className="pb-1.5 text-left font-medium">Rank</th>
-            <th className="pb-1.5 text-right font-medium">Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {weeklyRewards.map(([rank, points]) => (
-            <tr
-              key={rank}
-              className="border-b border-(--brand-purple-medium)/15"
-            >
-              <td className="py-1.5 text-(--color-scheme-1--text)">{rank}</td>
-              <td className="py-1.5 text-right tabular-nums text-white">
-                {points}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+export function WeeklyRewardsCard() {
+  return (
+    <SidebarCard>
+      <h3 className="mb-4 text-[15px] font-bold text-white">
+        Weekly Points Rewards
+      </h3>
+      <div className="mb-4 text-xs leading-snug text-text-muted">
+        Distributed every Monday to top 1,000 users
+      </div>
+      <RewardTable headers={['Rank', 'Points']} rows={weeklyRewards} />
+    </SidebarCard>
+  );
+}
 
-      <p className="mb-2 text-xs font-medium uppercase tracking-wider text-(--color-scheme-1--text)">
-        Season 1 $QUIP Prizes
-      </p>
-      <table className="w-full text-xs">
-        <thead>
-          <tr className="border-b border-(--brand-purple-medium)/30 text-(--color-scheme-1--text)">
-            <th className="pb-1.5 text-left font-medium">Rank</th>
-            <th className="pb-1.5 text-right font-medium">Reward</th>
-          </tr>
-        </thead>
-        <tbody>
-          {seasonRewards.map(([rank, reward]) => (
-            <tr
-              key={rank}
-              className="border-b border-(--brand-purple-medium)/15"
-            >
-              <td className="py-1.5 text-(--color-scheme-1--text)">{rank}</td>
-              <td className="py-1.5 text-right tabular-nums text-white">
-                {reward}
-              </td>
-            </tr>
-          ))}
-          <tr className="font-semibold">
-            <td className="pt-2 text-(--color-scheme-1--text)">Total</td>
-            <td className="pt-2 text-right tabular-nums text-(--brand-cyan)">
-              $100,000
+function RewardTable({
+  headers,
+  rows,
+  footer,
+}: {
+  headers: [string, string];
+  rows: readonly (readonly [string, string])[];
+  footer?: [string, string];
+}) {
+  return (
+    <table className="w-full border-collapse text-[13px]">
+      <thead>
+        <tr className="border-b border-white/6">
+          <th className="pb-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.8px] text-text-muted">
+            {headers[0]}
+          </th>
+          <th className="pb-2.5 text-right text-[11px] font-semibold uppercase tracking-[0.8px] text-text-muted">
+            {headers[1]}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(([rank, value]) => (
+          <tr key={rank} className="border-b border-white/3 last:border-b-0">
+            <td className="py-2.5 text-text">{rank}</td>
+            <td className="py-2.5 text-right font-mono text-xs font-medium text-white">
+              {value}
             </td>
           </tr>
-        </tbody>
-      </table>
-    </SidebarCard>
+        ))}
+      </tbody>
+      {footer && (
+        <tfoot>
+          <tr>
+            <td className="border-t border-white/6 pt-3.5 text-sm font-bold text-white">
+              {footer[0]}
+            </td>
+            <td className="border-t border-white/6 pt-3.5 text-right font-mono text-sm font-bold text-white">
+              {footer[1]}
+            </td>
+          </tr>
+        </tfoot>
+      )}
+    </table>
   );
 }

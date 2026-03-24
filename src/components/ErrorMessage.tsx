@@ -10,7 +10,7 @@ export function ErrorMessage({ message, onRetry }: ErrorMessageProps) {
         {message}
       </div>
       {onRetry && (
-        <button className="btn" onClick={onRetry}>
+        <button className="cursor-pointer rounded-lg border border-white/6 bg-white/3 px-4 py-2 text-sm font-medium text-text-muted transition-all duration-150 hover:bg-white/6 hover:text-text-primary" onClick={onRetry}>
           Try Again
         </button>
       )}
