@@ -2,12 +2,14 @@ import { formatPercent, getPointsForRank, QUIP_REWARDS } from '@/lib/format';
 import { ProgressBar } from './ProgressBar';
 import { RewardBadge } from './RewardBadge';
 import { LeaderboardEntryRanked } from '@/lib/types';
+import type { SortBy } from '@/store/leaderboard';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
 interface LeaderboardRowProps {
   entry: LeaderboardEntryRanked;
   topMindshare: number;
+  sortBy: SortBy;
 }
 
 function RankWithMedal({ rank }: { rank: number }) {
@@ -17,10 +19,11 @@ function RankWithMedal({ rank }: { rank: number }) {
   else return <span className="min-w-8">{rank + 1}</span>;
 }
 
-export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
+export function LeaderboardRow({ entry, topMindshare, sortBy }: LeaderboardRowProps) {
+  const mindshare = entry.mindshare_percent[sortBy];
   const progress =
     topMindshare > 0
-      ? (entry.mindshare_percent.yearly / topMindshare) * 100
+      ? (mindshare / topMindshare) * 100
       : 0;
 
   const quip$ = getPointsForRank(entry.rank.yearly + 1, QUIP_REWARDS);
@@ -73,7 +76,7 @@ export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
 
       <td className="py-3 pl-2 pr-8 space-y-1">
         <div className="w-14 text-xs font-mono text-(--color-scheme-1--text)">
-          {formatPercent(entry.mindshare_percent.yearly)}
+          {formatPercent(mindshare)}
         </div>
 
         <ProgressBar progress={progress} />

@@ -54,6 +54,7 @@ export function LeaderboardTable() {
                 key={entry.x_user_id}
                 entry={entry}
                 topMindshare={topMindshare}
+                sortBy={sortBy}
               />
             ))}
           </tbody>

@@ -64,9 +64,10 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
 
   topMindshare: () => {
     const entries = get().rankedEntries();
+    const period = get().sortBy;
     const topMindshare =
-      (entries[0]?.mindshare_percent?.yearly ||
-        entries[0]?.mindshare_percent?.weekly) ??
+      (entries[0]?.mindshare_percent?.[period] ||
+        entries[0]?.mindshare_percent?.yearly) ??
       0;
     return topMindshare;
   },
