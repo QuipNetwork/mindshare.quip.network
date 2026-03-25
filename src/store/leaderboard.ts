@@ -16,7 +16,6 @@ interface LeaderboardState {
   error: string | null;
   searchQuery: string;
   sortBy: SortBy;
-  filteredEntries: () => LeaderboardEntryMerged[];
   rankedEntries: () => LeaderboardEntryRanked[];
   pageEntries: () => LeaderboardEntryRanked[];
   topMindshare: () => number;
@@ -35,19 +34,16 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   searchQuery: '',
   sortBy: 'yearly' as SortBy,
 
-  filteredEntries: () => {
-    const { entries, searchQuery } = get();
-    if (!searchQuery) return entries;
+  rankedEntries: () => {
+    const { entries, searchQuery, sortBy } = get();
+    const ranked = calculateRanks(entries, sortBy);
+    if (!searchQuery) return ranked;
     const q = searchQuery.toLowerCase();
-    return entries.filter(
+    return ranked.filter(
       (e) =>
         e.x_username.toLowerCase().includes(q) ||
         e.x_display_name.toLowerCase().includes(q)
     );
-  },
-
-  rankedEntries: () => {
-    return calculateRanks(get().filteredEntries(), get().sortBy);
   },
 
   pageEntries: () => {
@@ -58,8 +54,8 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   },
 
   totalPages: () => {
-    const { filteredEntries } = get();
-    return Math.ceil(filteredEntries().length / ITEMS_PER_PAGE);
+    const { rankedEntries } = get();
+    return Math.ceil(rankedEntries().length / ITEMS_PER_PAGE);
   },
 
   topMindshare: () => {
