@@ -1,6 +1,9 @@
 import type { Config } from '@netlify/functions';
 import { isRespondable, requireMethod } from '../../src/lib/http';
-import { mergeLeaderboards } from '../../src/lib/leaderboard';
+import {
+  getMostRecent12PMUtc,
+  mergeLeaderboards,
+} from '../../src/lib/leaderboard';
 import { MindshareClient } from '../../src/lib/mindshare-api';
 import { remember } from '../../src/lib/netlify';
 
@@ -26,11 +29,19 @@ export default async function handler(request: Request): Promise<Response> {
     const client = new MindshareClient(apiKey);
 
     const data = await remember('mindshare-cache', CACHE_KEY, CACHE_TTL_MS, async () => {
-      const [weekly, yearly] = await Promise.all([
+      const dailyStartTs = getMostRecent12PMUtc();
+      const endTs = Math.floor(Date.now() / 1000);
+
+      const [weekly, yearly, daily] = await Promise.all([
         client.fetchLeaderboardByDays('quipnetwork', 7),
         client.fetchLeaderboardByDays('quipnetwork', 365),
+        client.fetchLeaderboard({
+          keyword: 'quipnetwork',
+          startTs: dailyStartTs,
+          endTs,
+        }),
       ]);
-      return mergeLeaderboards(weekly, yearly);
+      return mergeLeaderboards(weekly, yearly, daily);
     });
 
     return jsonResponse(data);

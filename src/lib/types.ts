@@ -17,10 +17,12 @@ export interface LeaderboardEntryMerged {
   x_avatar_url: string | null;
   x_link: string;
   mindshare_score: {
+    daily: number;
     weekly: number;
     yearly: number;
   };
   mindshare_percent: {
+    daily: number;
     weekly: number;
     yearly: number;
   };
@@ -28,6 +30,7 @@ export interface LeaderboardEntryMerged {
 
 export interface LeaderboardEntryRanked extends LeaderboardEntryMerged {
   rank: {
+    daily: number;
     weekly: number;
     yearly: number;
   };

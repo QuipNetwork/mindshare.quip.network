@@ -20,6 +20,12 @@ export function FilterControls() {
         >
           Weekly
         </ToggleButton>
+        <ToggleButton
+          active={sortBy === 'daily'}
+          onClick={() => setSortBy('daily')}
+        >
+          Daily
+        </ToggleButton>
       </div>
 
       <SearchBar

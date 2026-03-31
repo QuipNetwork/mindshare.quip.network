@@ -7,15 +7,18 @@ import {
 import { ProgressBar } from './ProgressBar';
 import { RewardBadge } from './RewardBadge';
 import { LeaderboardEntryRanked } from '@/lib/types';
+import type { SortBy } from '@/store/leaderboard';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
 interface LeaderboardRowProps {
   entry: LeaderboardEntryRanked;
   topMindshare: number;
+  sortBy: SortBy;
   isFirst?: boolean;
   dimSeason?: boolean;
   dimWeekly?: boolean;
+  dimDaily?: boolean;
 }
 
 function RankDisplay({ rank }: { rank: number }) {
@@ -41,19 +44,22 @@ const BRIGHT = 'opacity-100 transition-opacity duration-250';
 export function LeaderboardRow({
   entry,
   topMindshare,
+  sortBy,
   isFirst,
   dimSeason,
   dimWeekly,
+  dimDaily,
 }: LeaderboardRowProps) {
   const seasonStyle = dimSeason ? DIM : BRIGHT;
   const weeklyStyle = dimWeekly ? DIM : BRIGHT;
+  const dailyStyle = dimDaily ? DIM : BRIGHT;
+  const mindsharePercent = entry.mindshare_percent[sortBy];
   const progress =
-    topMindshare > 0
-      ? (entry.mindshare_percent.yearly / topMindshare) * 100
-      : 0;
+    topMindshare > 0 ? (mindsharePercent / topMindshare) * 100 : 0;
 
   const seasonRank = entry.rank.yearly + 1;
   const weeklyRank = entry.rank.weekly + 1;
+  const dailyRank = entry.rank.daily + 1;
   const quipReward = getPointsForRank(seasonRank, QUIP_REWARDS);
   const weeklyReward = getPointsForRank(weeklyRank, RANK_REWARDS);
 
@@ -97,7 +103,7 @@ export function LeaderboardRow({
       {/* Mindshare */}
       <td className="min-w-35 py-4 px-4">
         <div className="mb-1.5 font-mono text-[13px] font-medium text-text">
-          {formatPercent(entry.mindshare_percent.yearly)}
+          {formatPercent(mindsharePercent)}
         </div>
         <ProgressBar progress={progress} />
       </td>
@@ -124,6 +130,11 @@ export function LeaderboardRow({
         ) : (
           <RewardBadge variant="empty">--</RewardBadge>
         )}
+      </td>
+
+      {/* Daily Rank */}
+      <td className={`whitespace-nowrap py-4 px-4 text-right ${dailyStyle}`}>
+        <RankDisplay rank={dailyRank} />
       </td>
     </tr>
   );

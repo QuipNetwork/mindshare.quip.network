@@ -4,7 +4,8 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { Pagination } from '@/components/Pagination';
 
-const TH = 'py-3.5 px-4 text-right text-[11px] font-semibold uppercase tracking-[1px] text-text-muted transition-opacity duration-250';
+const TH =
+  'py-3.5 px-4 text-right text-[11px] font-semibold uppercase tracking-[1px] text-text-muted transition-opacity duration-250';
 
 export function LeaderboardTable() {
   const store = useLeaderboardStore();
@@ -24,14 +25,17 @@ export function LeaderboardTable() {
   const totalPages = store.totalPages();
   const topMindshare = store.topMindshare();
 
-  const dimSeason = sortBy === 'weekly';
-  const dimWeekly = sortBy === 'yearly';
+  const dimSeason = sortBy !== 'yearly';
+  const dimWeekly = sortBy !== 'weekly';
+  const dimDaily = sortBy !== 'daily';
+
+  console.log('!!!!', entries);
 
   return (
     <div>
       <div className="animate-fade-up delay-[250ms] overflow-hidden rounded-2xl border border-white/6 bg-white/3">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] border-collapse">
+          <table className="w-full min-w-[780px] border-collapse">
             <thead>
               <tr className="border-b border-white/6 bg-white/[0.015]">
                 <th className="py-3.5 pl-5 pr-4 text-left text-[11px] font-semibold uppercase tracking-[1px] text-text-muted">
@@ -40,11 +44,20 @@ export function LeaderboardTable() {
                 <th className="py-3.5 px-4 text-left text-[11px] font-semibold uppercase tracking-[1px] text-text-muted">
                   Mindshare
                 </th>
-                <th className={`${TH} ${dimSeason ? 'opacity-40' : 'opacity-100'}`}>
+                <th
+                  className={`${TH} ${dimSeason ? 'opacity-40' : 'opacity-100'}`}
+                >
                   Season Rank
                 </th>
-                <th className={`${TH} ${dimWeekly ? 'opacity-40' : 'opacity-100'}`}>
+                <th
+                  className={`${TH} ${dimWeekly ? 'opacity-40' : 'opacity-100'}`}
+                >
                   Weekly Rank
+                </th>
+                <th
+                  className={`${TH} ${dimDaily ? 'opacity-40' : 'opacity-100'}`}
+                >
+                  Daily Rank
                 </th>
               </tr>
             </thead>
@@ -55,8 +68,10 @@ export function LeaderboardTable() {
                   entry={entry}
                   topMindshare={topMindshare}
                   isFirst={index === 0 && store.page === 1}
+                  sortBy={sortBy}
                   dimSeason={dimSeason}
                   dimWeekly={dimWeekly}
+                  dimDaily={dimDaily}
                 />
               ))}
             </tbody>

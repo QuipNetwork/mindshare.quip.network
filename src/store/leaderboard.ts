@@ -7,7 +7,7 @@ import type {
 import { ITEMS_PER_PAGE } from '@/lib/types';
 import { calculateRanks } from '@/lib/leaderboard';
 
-export type SortBy = 'yearly' | 'weekly';
+export type SortBy = 'yearly' | 'weekly' | 'daily';
 
 interface LeaderboardState {
   entries: LeaderboardEntryMerged[];
@@ -59,12 +59,9 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   },
 
   topMindshare: () => {
+    const { sortBy } = get();
     const entries = get().rankedEntries();
-    const topMindshare =
-      (entries[0]?.mindshare_percent?.yearly ||
-        entries[0]?.mindshare_percent?.weekly) ??
-      0;
-    return topMindshare;
+    return entries[0]?.mindshare_percent?.[sortBy] ?? 0;
   },
 
   setPage: (page) => set({ page }),
