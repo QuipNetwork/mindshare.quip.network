@@ -24,6 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+mock-leaderboard.json
+mock-data.ts
 
 # Local Netlify folder
 .netlify

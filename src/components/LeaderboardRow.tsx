@@ -11,16 +11,6 @@ import type { SortBy } from '@/store/leaderboard';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
-interface LeaderboardRowProps {
-  entry: LeaderboardEntryRanked;
-  topMindshare: number;
-  sortBy: SortBy;
-  isFirst?: boolean;
-  dimSeason?: boolean;
-  dimWeekly?: boolean;
-  dimDaily?: boolean;
-}
-
 function RankDisplay({ rank }: { rank: number }) {
   const medal = rank <= 3 ? MEDALS[rank - 1] : null;
 
@@ -41,30 +31,43 @@ function RankDisplay({ rank }: { rank: number }) {
 const DIM = 'opacity-40 transition-opacity duration-250';
 const BRIGHT = 'opacity-100 transition-opacity duration-250';
 
-export function LeaderboardRow({
+function rowClass(hovered: boolean) {
+  return `border-b border-white/3 transition-colors duration-150 last:border-b-0 ${hovered ? 'bg-white/[0.025]' : ''}`;
+}
+
+interface SeasonRankRowProps {
+  entry: LeaderboardEntryRanked;
+  topMindshare: number;
+  sortBy: SortBy;
+  isFirst?: boolean;
+  dimSeason?: boolean;
+  hovered?: boolean;
+  onHover?: (id: string | null) => void;
+}
+
+export function SeasonRankRow({
   entry,
   topMindshare,
   sortBy,
   isFirst,
   dimSeason,
-  dimWeekly,
-  dimDaily,
-}: LeaderboardRowProps) {
+  hovered = false,
+  onHover,
+}: SeasonRankRowProps) {
   const seasonStyle = dimSeason ? DIM : BRIGHT;
-  const weeklyStyle = dimWeekly ? DIM : BRIGHT;
-  const dailyStyle = dimDaily ? DIM : BRIGHT;
   const mindsharePercent = entry.mindshare_percent[sortBy] ?? 0;
   const progress =
     topMindshare > 0 ? (mindsharePercent / topMindshare) * 100 : 0;
 
   const seasonRank = entry.rank.yearly + 1;
-  const weeklyRank = entry.rank.weekly + 1;
-  const dailyRank = entry.rank.daily + 1;
   const quipReward = getPointsForRank(seasonRank, QUIP_REWARDS);
-  const weeklyReward = getPointsForRank(weeklyRank, RANK_REWARDS);
 
   return (
-    <tr className="border-b border-white/3 transition-colors duration-150 last:border-b-0 hover:bg-white/2.5">
+    <tr
+      className={rowClass(hovered)}
+      onMouseEnter={() => onHover?.(entry.x_user_id)}
+      onMouseLeave={() => onHover?.(null)}
+    >
       {/* User */}
       <td className="py-4 pl-5 pr-4">
         <a
@@ -119,7 +122,38 @@ export function LeaderboardRow({
           <RewardBadge variant="empty">--</RewardBadge>
         )}
       </td>
+    </tr>
+  );
+}
 
+interface RecentRankRowProps {
+  entry: LeaderboardEntryRanked;
+  dimWeekly?: boolean;
+  dimDaily?: boolean;
+  hovered?: boolean;
+  onHover?: (id: string | null) => void;
+}
+
+export function RecentRankRow({
+  entry,
+  dimWeekly,
+  dimDaily,
+  hovered = false,
+  onHover,
+}: RecentRankRowProps) {
+  const weeklyStyle = dimWeekly ? DIM : BRIGHT;
+  const dailyStyle = dimDaily ? DIM : BRIGHT;
+
+  const weeklyRank = entry.rank.weekly + 1;
+  const dailyRank = entry.rank.daily + 1;
+  const weeklyReward = getPointsForRank(weeklyRank, RANK_REWARDS);
+
+  return (
+    <tr
+      className={rowClass(hovered)}
+      onMouseEnter={() => onHover?.(entry.x_user_id)}
+      onMouseLeave={() => onHover?.(null)}
+    >
       {/* Weekly Rank */}
       <td className={`whitespace-nowrap py-4 px-4 text-right ${weeklyStyle}`}>
         <RankDisplay rank={weeklyRank} />
@@ -133,8 +167,10 @@ export function LeaderboardRow({
       </td>
 
       {/* Daily Rank */}
-      <td className={`whitespace-nowrap py-4 px-4 text-right ${dailyStyle}`}>
-        <RankDisplay rank={dailyRank} />
+      <td className={`whitespace-nowrap py-4 px-4 text-center ${dailyStyle}`}>
+        <span className="font-mono text-[13px] font-semibold text-text-muted">
+          {dailyRank}
+        </span>
       </td>
     </tr>
   );
