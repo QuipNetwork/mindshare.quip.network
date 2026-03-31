@@ -23,12 +23,7 @@ export default async function handler(request: Request): Promise<Response> {
 
     const apiKey = Netlify.env.get('MINDSHARE_API_KEY');
     if (!apiKey) {
-      try {
-        const { MOCK_LEADERBOARD } = await import('./mock-data.ts');
-        return jsonResponse(MOCK_LEADERBOARD);
-      } catch {
-        return jsonResponse({ error: 'Server configuration error' }, 500);
-      }
+      return jsonResponse({ error: 'Server configuration error' }, 500);
     }
 
     const client = new MindshareClient(apiKey);
