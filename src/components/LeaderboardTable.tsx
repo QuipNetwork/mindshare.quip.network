@@ -29,8 +29,6 @@ export function LeaderboardTable() {
   const dimWeekly = sortBy !== 'weekly';
   const dimDaily = sortBy !== 'daily';
 
-  console.log('!!!!', entries);
-
   return (
     <div>
       <div className="animate-fade-up delay-[250ms] overflow-hidden rounded-2xl border border-white/6 bg-white/3">

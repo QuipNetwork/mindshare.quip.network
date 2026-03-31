@@ -7,7 +7,7 @@ import {
 import { MindshareClient } from '../../src/lib/mindshare-api';
 import { remember } from '../../src/lib/netlify';
 
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
 const CACHE_KEY = 'quipnetwork|merged';
 
 function jsonResponse(data: unknown, status = 200): Response {

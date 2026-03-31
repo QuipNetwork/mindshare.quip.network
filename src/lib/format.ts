@@ -1,5 +1,5 @@
 export function formatPercent(n: number): string {
-  return `${n.toFixed(2)}%`;
+  return `${(n ?? 0).toFixed(2)}%`;
 }
 
 export const RANK_REWARDS: Map<number, number> = new Map([

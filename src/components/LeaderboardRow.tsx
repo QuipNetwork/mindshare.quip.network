@@ -53,7 +53,7 @@ export function LeaderboardRow({
   const seasonStyle = dimSeason ? DIM : BRIGHT;
   const weeklyStyle = dimWeekly ? DIM : BRIGHT;
   const dailyStyle = dimDaily ? DIM : BRIGHT;
-  const mindsharePercent = entry.mindshare_percent[sortBy];
+  const mindsharePercent = entry.mindshare_percent[sortBy] ?? 0;
   const progress =
     topMindshare > 0 ? (mindsharePercent / topMindshare) * 100 : 0;
 
