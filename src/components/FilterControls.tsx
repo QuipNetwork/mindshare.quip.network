@@ -1,25 +1,16 @@
 import { useLeaderboardStore } from '@/store/leaderboard';
+import { FollowCta } from './FollowCta';
 import { SearchBar } from './SearchBar';
 
 export function FilterControls() {
-  const { searchQuery, setSearchQuery, sortBy, setSortBy } =
-    useLeaderboardStore();
+  const { searchQuery, setSearchQuery } = useLeaderboardStore();
 
   return (
     <div className="animate-fade-up delay-200 mb-5 flex flex-wrap items-center justify-between gap-3">
-      <div className="inline-flex rounded-[10px] border border-white/6 bg-white/4 p-[3px]">
-        <ToggleButton
-          active={sortBy === 'yearly'}
-          onClick={() => setSortBy('yearly')}
-        >
-          Season
-        </ToggleButton>
-        <ToggleButton
-          active={sortBy === 'weekly'}
-          onClick={() => setSortBy('weekly')}
-        >
-          Weekly
-        </ToggleButton>
+      <ButtonBar />
+
+      <div className="hidden flex-1 justify-center sm:flex">
+        <FollowCta />
       </div>
 
       <SearchBar
@@ -27,6 +18,26 @@ export function FilterControls() {
         value={searchQuery}
         onChange={setSearchQuery}
       />
+    </div>
+  );
+}
+
+function ButtonBar() {
+  const { sortBy, setSortBy } = useLeaderboardStore();
+  return (
+    <div className="inline-flex rounded-[10px] border border-white/6 bg-white/4 p-0.75">
+      <ToggleButton
+        active={sortBy === 'yearly'}
+        onClick={() => setSortBy('yearly')}
+      >
+        Season
+      </ToggleButton>
+      <ToggleButton
+        active={sortBy === 'weekly'}
+        onClick={() => setSortBy('weekly')}
+      >
+        Weekly
+      </ToggleButton>
     </div>
   );
 }
