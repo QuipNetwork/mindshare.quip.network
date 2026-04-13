@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getNextMondayWave } from '../lib/date';
 
 interface CountdownValues {
   days: number;
@@ -39,24 +40,8 @@ function useCountdown(getTarget: () => Date): CountdownValues {
   return remaining;
 }
 
-function getNextWave(): Date {
-  const now = new Date();
-  const dayOfWeek = now.getUTCDay();
-  const daysUntilMonday = (1 - dayOfWeek + 7) % 7;
-
-  const candidate = new Date(now);
-  candidate.setUTCDate(now.getUTCDate() + daysUntilMonday);
-  candidate.setUTCHours(13, 0, 0, 0);
-
-  if (candidate <= now) {
-    candidate.setUTCDate(candidate.getUTCDate() + 7);
-  }
-
-  return candidate;
-}
-
 export function Countdown() {
-  const { days, hours, minutes, seconds } = useCountdown(getNextWave);
+  const { days, hours, minutes, seconds } = useCountdown(getNextMondayWave);
 
   return (
     <>
