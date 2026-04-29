@@ -5,7 +5,7 @@ import { mergeLeaderboards } from '../../src/lib/leaderboard';
 import { MindshareClient } from '../../src/lib/mindshare-api';
 import { remember } from '../../src/lib/netlify';
 
-const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const CACHE_TTL_MS = 60 * 60 * 1000; // 60 minutes
 const CACHE_KEY = 'quipnetwork|merged';
 
 function jsonResponse(data: unknown, status = 200): Response {
