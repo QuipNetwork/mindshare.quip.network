@@ -26,7 +26,7 @@ export function Explainer() {
               waves drop every Monday at 1pm UTC.
             </Step>
             <Step num="Step 03" title="Climb & earn">
-              Top 1,000 at season end share the $100,000 pool in $QUIP Token
+              Top 315 at season end share the $100,000 pool in $QUIP Token
               Rewards, paid at TGE.
             </Step>
           </div>

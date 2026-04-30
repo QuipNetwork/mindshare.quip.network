@@ -13,7 +13,7 @@ export function StatsStrip() {
         />
         <Stat
           label="Weekly Winners"
-          value="Top 1,000"
+          value="Top 315"
           sub="$QUIP Points · Every Monday at 1pm UTC"
         />
         <Stat

@@ -47,7 +47,7 @@ export function WeeklyRewardsCard() {
       <SidebarHeading>
         Weekly <Em>Points Rewards</Em>
       </SidebarHeading>
-      <SideSub>Distributed every Monday to top 1,000 users</SideSub>
+      <SideSub>Distributed every Monday to top 315 users</SideSub>
       <SideTable headers={['Rank', 'Points']} rows={weeklyRewards} />
     </SidebarCard>
   );
