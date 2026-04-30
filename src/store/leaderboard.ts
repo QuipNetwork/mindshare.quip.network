@@ -11,7 +11,7 @@ export type SortBy = 'yearly' | 'weekly';
 
 interface LeaderboardState {
   entries: LeaderboardEntryMerged[];
-  page: number;
+  visibleCount: number;
   loading: boolean;
   error: string | null;
   searchQuery: string;
@@ -19,8 +19,8 @@ interface LeaderboardState {
   rankedEntries: () => LeaderboardEntryRanked[];
   pageEntries: () => LeaderboardEntryRanked[];
   topMindshare: () => number;
-  totalPages: () => number;
-  setPage: (page: number) => void;
+  totalCount: () => number;
+  loadMore: () => void;
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: SortBy) => void;
   fetch: () => Promise<void>;
@@ -28,7 +28,7 @@ interface LeaderboardState {
 
 export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   entries: [],
-  page: 1,
+  visibleCount: ITEMS_PER_PAGE,
   loading: false,
   error: null,
   searchQuery: '',
@@ -47,16 +47,11 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   },
 
   pageEntries: () => {
-    const { rankedEntries, page } = get();
-    const entries = rankedEntries();
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    return entries.slice(start, start + ITEMS_PER_PAGE);
+    const { rankedEntries, visibleCount } = get();
+    return rankedEntries().slice(0, visibleCount);
   },
 
-  totalPages: () => {
-    const { rankedEntries } = get();
-    return Math.ceil(rankedEntries().length / ITEMS_PER_PAGE);
-  },
+  totalCount: () => get().rankedEntries().length,
 
   topMindshare: () => {
     const entries = get().rankedEntries();
@@ -67,18 +62,20 @@ export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
     return topMindshare;
   },
 
-  setPage: (page) => set({ page }),
+  loadMore: () =>
+    set((s) => ({ visibleCount: s.visibleCount + ITEMS_PER_PAGE })),
 
-  setSearchQuery: (query) => set({ searchQuery: query, page: 1 }),
+  setSearchQuery: (query) =>
+    set({ searchQuery: query, visibleCount: ITEMS_PER_PAGE }),
 
-  setSortBy: (sortBy) => set({ sortBy, page: 1 }),
+  setSortBy: (sortBy) => set({ sortBy, visibleCount: ITEMS_PER_PAGE }),
 
   fetch: async () => {
     set({ loading: true, error: null });
 
     try {
       const entries = await fetchLeaderboard();
-      set({ entries, loading: false, page: 1 });
+      set({ entries, loading: false, visibleCount: ITEMS_PER_PAGE });
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : 'Failed to load leaderboard';
