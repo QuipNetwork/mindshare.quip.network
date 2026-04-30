@@ -44,32 +44,33 @@ export function Countdown() {
   const { days, hours, minutes, seconds } = useCountdown(getNextMondayWave);
 
   return (
+    <div className="flex flex-col gap-2.5 border-t border-zinc-200 pt-5">
+      <div className="flex items-center gap-2.5 font-mono text-xs font-medium uppercase tracking-[0.4px] text-zinc-600">
+        <span className="inline-block h-2 w-2 animate-pulse-soft rounded-full bg-zinc-950" />
+        Next point wave in
+      </div>
+      <div className="font-mono text-[clamp(26px,calc(2.5vw+14px),40px)] font-medium leading-[1.1] tracking-[-0.01em] tabular-nums text-zinc-950">
+        <CdNum value={days} unit="d" />
+        <Sep />
+        <CdNum value={hours} unit="h" />
+        <Sep />
+        <CdNum value={minutes} unit="m" />
+        <Sep />
+        <CdNum value={seconds} unit="s" />
+      </div>
+    </div>
+  );
+}
+
+function CdNum({ value, unit }: { value: number; unit: string }) {
+  return (
     <>
-      <div className="mb-1 text-[10px] font-medium uppercase tracking-[1.5px] text-text-muted">
-        Next Point Wave
-      </div>
-      <div className="flex items-center gap-1">
-        <CdGroup value={days} unit="days" />
-        <span className="self-start text-lg font-light leading-[1.3] text-text-muted">:</span>
-        <CdGroup value={hours} unit="hrs" />
-        <span className="self-start text-lg font-light leading-[1.3] text-text-muted">:</span>
-        <CdGroup value={minutes} unit="min" />
-        <span className="self-start text-lg font-light leading-[1.3] text-text-muted">:</span>
-        <CdGroup value={seconds} unit="sec" />
-      </div>
+      <span>{String(value).padStart(2, '0')}</span>
+      <span className="ml-0.5 text-[0.55em] text-zinc-500">{unit}</span>
     </>
   );
 }
 
-function CdGroup({ value, unit }: { value: number; unit: string }) {
-  return (
-    <div className="flex min-w-8 flex-col items-center">
-      <span className="font-mono text-xl font-medium leading-[1.2] tabular-nums text-white">
-        {String(value).padStart(2, '0')}
-      </span>
-      <span className="mt-0.5 text-[9px] font-semibold uppercase tracking-[1px] text-text-muted">
-        {unit}
-      </span>
-    </div>
-  );
+function Sep() {
+  return <span className="mx-1 text-zinc-300">:</span>;
 }

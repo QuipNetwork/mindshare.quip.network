@@ -1,42 +1,143 @@
 @import 'tailwindcss';
 
+/* ---------- Fonts ---------- */
+
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('/fonts/ABCFavorit-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('/fonts/ABCFavorit-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('/fonts/ABCFavorit-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('/fonts/ABCFavorit-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Mono';
+  src: url('/fonts/ABCFavoritMono-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Favorit Mono';
+  src: url('/fonts/ABCFavoritMono-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Favorit Mono';
+  src: url('/fonts/ABCFavoritMono-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Gaisyr';
+  src: url('/fonts/ABCGaisyr-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Gaisyr';
+  src: url('/fonts/ABCGaisyr-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Gaisyr';
+  src: url('/fonts/ABCGaisyr-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Gaisyr';
+  src: url('/fonts/ABCGaisyr-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Gaisyr';
+  src: url('/fonts/ABCGaisyr-BookItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
   --breakpoint-xs: 400px;
 
-  --color-bg: #06060b;
-  --color-text: #8a8499;
-  --color-text-muted: #7a7490;
-  --color-text-primary: #f0eef5;
-  --color-purple-dark: #1a0c25;
-  --color-purple-medium: #5a4a74;
-  --color-purple: #8b5cf6;
-  --color-cyan: #00d4ff;
-  --color-pink: #e040e0;
-  --color-gold: #ffd700;
-  --color-silver: #c0c0c0;
-  --color-bronze: #cd7f32;
+  --font-sans: 'ABC Favorit', system-ui, sans-serif;
+  --font-display: 'ABC Gaisyr', Georgia, serif;
+  --font-mono: 'ABC Favorit Mono', ui-monospace, monospace;
 
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Zinc scale (override Tailwind defaults to match design tokens) */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-150: #e4e4e7;
+  --color-zinc-200: #dbdbde;
+  --color-zinc-250: #d4d4d8;
+  --color-zinc-300: #c9c9cb;
+  --color-zinc-400: #9f9fa9;
+  --color-zinc-500: #71717b;
+  --color-zinc-550: #56565c;
+  --color-zinc-600: #52525c;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-750: #343436;
+  --color-zinc-800: #27272a;
+  --color-zinc-850: #212124;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+
+  --color-coral: #ff6467;
+
+  /* Hero gradient stops */
+  --color-grad-yellow-warm: #fef278;
+  --color-grad-yellow: #ffde53;
+  --color-grad-lime: #eeff64;
+  --color-grad-cyan-pale: #cafdfb;
+  --color-grad-cyan: #bcf4ff;
+  --color-grad-lilac: #e6d7ff;
 
   --animate-fade-up: fadeUp 0.5s ease both;
+  --animate-bar-grow: barGrow 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-pulse-soft: pulseSoft 2s ease-in-out infinite;
 }
 
 @layer base {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-purple-medium) transparent;
-  }
-
+  html,
   body {
-    background-color: var(--color-bg);
-    color: #e0dce8;
-    font-family:
-      'Inter',
-      -apple-system,
-      BlinkMacSystemFont,
-      sans-serif;
     margin: 0;
-    min-height: 100vh;
+    background: var(--color-zinc-50);
+    color: var(--color-zinc-800);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'case';
   }
 
   #root {
@@ -48,39 +149,14 @@
 
 @layer components {
   .toast-base {
-    background-color: #333;
-    color: white;
+    background-color: var(--color-zinc-950);
+    color: var(--color-zinc-50);
     max-width: 90%;
     word-break: break-word;
   }
 
   .toast-error {
     background-color: rgb(239, 68, 68);
-  }
-}
-
-@keyframes float1 {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(10%, 5%) scale(1.1);
-  }
-  66% {
-    transform: translate(-5%, 10%) scale(0.95);
-  }
-}
-@keyframes float2 {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(-8%, -5%) scale(1.05);
-  }
-  66% {
-    transform: translate(5%, -8%) scale(1.1);
   }
 }
 
@@ -92,5 +168,24 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes barGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes pulseSoft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
   }
 }

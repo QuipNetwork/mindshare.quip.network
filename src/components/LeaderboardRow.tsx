@@ -5,124 +5,56 @@ import {
   RANK_REWARDS,
 } from '@/lib/format';
 import { ProgressBar } from './ProgressBar';
-import { RewardBadge } from './RewardBadge';
-import { LeaderboardEntryRanked } from '@/lib/types';
-
-const MEDALS = ['🥇', '🥈', '🥉'];
+import { UserIdentity } from './UserIdentity';
+import type { LeaderboardEntryRanked } from '@/lib/types';
 
 interface LeaderboardRowProps {
   entry: LeaderboardEntryRanked;
   topMindshare: number;
-  isFirst?: boolean;
-  dimSeason?: boolean;
-  dimWeekly?: boolean;
 }
 
-function RankDisplay({ rank }: { rank: number }) {
-  const medal = rank <= 3 ? MEDALS[rank - 1] : null;
-
-  if (medal)
-    return (
-      <span className="mr-2.5 inline-block min-w-6 text-right text-lg leading-none align-middle">
-        {medal}
-      </span>
-    );
-
-  return (
-    <span className="mr-2.5 inline-block min-w-6 text-right font-mono text-[13px] font-semibold text-text-muted">
-      {rank}
-    </span>
-  );
-}
-
-const DIM = 'opacity-40 transition-opacity duration-250';
-const BRIGHT = 'opacity-100 transition-opacity duration-250';
-
-export function LeaderboardRow({
-  entry,
-  topMindshare,
-  isFirst,
-  dimSeason,
-  dimWeekly,
-}: LeaderboardRowProps) {
-  const seasonStyle = dimSeason ? DIM : BRIGHT;
-  const weeklyStyle = dimWeekly ? DIM : BRIGHT;
+export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
+  const seasonRank = entry.rank.yearly + 1;
+  const weeklyRank = entry.rank.weekly + 1;
+  const quipReward = getPointsForRank(seasonRank, QUIP_REWARDS);
+  const weeklyReward = getPointsForRank(weeklyRank, RANK_REWARDS);
   const progress =
     topMindshare > 0
       ? (entry.mindshare_percent.yearly / topMindshare) * 100
       : 0;
 
-  const seasonRank = entry.rank.yearly + 1;
-  const weeklyRank = entry.rank.weekly + 1;
-  const quipReward = getPointsForRank(seasonRank, QUIP_REWARDS);
-  const weeklyReward = getPointsForRank(weeklyRank, RANK_REWARDS);
-
   return (
-    <tr className="border-b border-white/3 transition-colors duration-150 last:border-b-0 hover:bg-white/2.5">
-      {/* User */}
-      <td className="py-4 pl-5 pr-4">
-        <a
+    <tr className="border-b border-zinc-150 transition-colors duration-150 hover:bg-zinc-100">
+      <td className="w-14 py-4 pl-1 pr-3 font-mono text-sm font-medium tabular-nums text-zinc-950">
+        {String(seasonRank).padStart(2, '0')}
+      </td>
+      <td className="min-w-0 px-3 py-4">
+        <UserIdentity
+          src={entry.x_avatar_url}
+          name={entry.x_display_name}
+          handle={entry.x_username}
           href={entry.x_link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-3 text-white no-underline"
-        >
-          {entry.x_avatar_url ? (
-            <img
-              src={entry.x_avatar_url}
-              alt=""
-              className={`h-9.5 w-9.5 shrink-0 rounded-full border-2 object-cover ${
-                isFirst
-                  ? 'border-[rgba(255,215,0,0.35)] shadow-[0_0_12px_rgba(255,215,0,0.15)]'
-                  : 'border-white/8'
-              }`}
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-full border-2 border-white/8 bg-purple-dark text-xs font-bold text-cyan">
-              {entry.x_display_name.charAt(0).toUpperCase()}
-            </div>
-          )}
-          <div className="min-w-0">
-            <span className="block max-w-50 truncate text-sm font-semibold text-white group-hover:text-cyan max-sm:max-w-30">
-              {entry.x_display_name}
-            </span>
-            <span className="text-xs text-text-muted">
-              @{entry.x_username}
-            </span>
-          </div>
-        </a>
+        />
       </td>
-
-      {/* Mindshare */}
-      <td className="min-w-35 py-4 px-4">
-        <div className="mb-1.5 font-mono text-[13px] font-medium text-text">
-          {formatPercent(entry.mindshare_percent.yearly)}
+      <td className="min-w-[200px] px-3 py-4">
+        <div className="flex items-center gap-3">
+          <span className="w-[52px] shrink-0 font-mono text-[13px] font-medium tabular-nums text-zinc-950">
+            {formatPercent(entry.mindshare_percent.yearly)}
+          </span>
+          <ProgressBar progress={progress} />
         </div>
-        <ProgressBar progress={progress} />
       </td>
-
-      {/* Season Rank */}
-      <td className={`whitespace-nowrap py-4 px-4 text-right ${seasonStyle}`}>
-        <RankDisplay rank={seasonRank} />
+      <td className="w-[110px] px-3 py-4 font-mono text-[13px] tabular-nums">
+        <div className="font-medium text-zinc-950">#{weeklyRank}</div>
+        <div className="mt-0.5 text-[11px] text-zinc-500">
+          {weeklyReward.toLocaleString()} pts
+        </div>
+      </td>
+      <td className="w-[100px] py-4 pl-3 pr-1 text-right font-mono text-[13px] font-medium tabular-nums text-zinc-950">
         {quipReward ? (
-          <RewardBadge variant="pink">
-            ${quipReward.toLocaleString()}
-          </RewardBadge>
+          `$${quipReward.toLocaleString()}`
         ) : (
-          <RewardBadge variant="empty">--</RewardBadge>
-        )}
-      </td>
-
-      {/* Weekly Rank */}
-      <td className={`whitespace-nowrap py-4 px-4 text-right ${weeklyStyle}`}>
-        <RankDisplay rank={weeklyRank} />
-        {weeklyReward ? (
-          <RewardBadge variant="cyan">
-            {weeklyReward.toLocaleString()}
-          </RewardBadge>
-        ) : (
-          <RewardBadge variant="empty">--</RewardBadge>
+          <span className="text-zinc-400">—</span>
         )}
       </td>
     </tr>

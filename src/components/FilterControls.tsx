@@ -3,18 +3,31 @@ import { FollowCta } from './FollowCta';
 import { SearchBar } from './SearchBar';
 
 export function FilterControls() {
-  const { searchQuery, setSearchQuery } = useLeaderboardStore();
+  const { searchQuery, setSearchQuery, sortBy, setSortBy } = useLeaderboardStore();
 
   return (
-    <div className="animate-fade-up delay-200 mb-5 flex flex-wrap items-center justify-between gap-3">
-      <ButtonBar />
-
-      <div className="hidden flex-1 justify-center sm:flex">
-        <FollowCta />
+    <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+      <div
+        className="inline-flex items-stretch divide-x divide-zinc-200 border border-zinc-200"
+        role="group"
+        aria-label="Sort"
+      >
+        <SortButton
+          active={sortBy === 'yearly'}
+          onClick={() => setSortBy('yearly')}
+        >
+          Season
+        </SortButton>
+        <SortButton
+          active={sortBy === 'weekly'}
+          onClick={() => setSortBy('weekly')}
+        >
+          Weekly
+        </SortButton>
       </div>
-
+      <FollowCta />
       <SearchBar
-        placeholder="Search by username..."
+        placeholder="Search by username"
         value={searchQuery}
         onChange={setSearchQuery}
       />
@@ -22,27 +35,7 @@ export function FilterControls() {
   );
 }
 
-function ButtonBar() {
-  const { sortBy, setSortBy } = useLeaderboardStore();
-  return (
-    <div className="inline-flex rounded-[10px] border border-white/6 bg-white/4 p-0.75">
-      <ToggleButton
-        active={sortBy === 'yearly'}
-        onClick={() => setSortBy('yearly')}
-      >
-        Season
-      </ToggleButton>
-      <ToggleButton
-        active={sortBy === 'weekly'}
-        onClick={() => setSortBy('weekly')}
-      >
-        Weekly
-      </ToggleButton>
-    </div>
-  );
-}
-
-function ToggleButton({
+function SortButton({
   active,
   onClick,
   children,
@@ -54,10 +47,10 @@ function ToggleButton({
   return (
     <button
       onClick={onClick}
-      className={`relative z-1 cursor-pointer rounded-lg border-none px-5 py-2 font-inherit text-[13px] font-semibold transition-all duration-250 ${
+      className={`px-3 pt-2 pb-[7px] font-mono text-xs uppercase tracking-[0.4px] transition-colors duration-150 ${
         active
-          ? 'bg-white/10 text-white shadow-[0_1px_6px_rgba(0,0,0,0.4)]'
-          : 'bg-transparent text-text-muted hover:text-text'
+          ? 'bg-zinc-950 text-zinc-50'
+          : 'bg-transparent text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950'
       }`}
     >
       {children}
