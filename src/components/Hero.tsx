@@ -25,7 +25,7 @@ export function Hero() {
               >
                 @quipnetwork
               </a>
-              . Finish the season in the top 315 to earn $QUIP Points, paid at TGE.
+              . Finish the season in the top 315 to earn $QUIP points, paid at TGE.
             </p>
           </div>
           <Countdown />

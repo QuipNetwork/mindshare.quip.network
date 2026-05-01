@@ -24,13 +24,20 @@ export function LeaderboardTable() {
   return (
     <div>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border-t border-zinc-200">
+        <table className="w-full table-fixed border-collapse border-t border-zinc-200">
+          <colgroup>
+            <col className="w-[100px]" />
+            <col className="w-[200px]" />
+            <col className="w-[150px]" />
+            <col className="w-[90px]" />
+            <col className="w-[90px]" />
+          </colgroup>
           <thead>
             <tr className="border-b border-zinc-200">
               <SortableTh
                 active={sortBy === 'yearly'}
                 onClick={() => setSortBy('yearly')}
-                className="w-14 pl-1"
+                className="pl-1"
               >
                 Season Rank
               </SortableTh>

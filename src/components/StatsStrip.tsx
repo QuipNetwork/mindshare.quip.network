@@ -9,12 +9,12 @@ export function StatsStrip() {
         <Stat
           label="Season 01 rewards"
           value="$100,000"
-          sub="in $QUIP Token Rewards · Top 315 · Paid at TGE"
+          sub="in $QUIP Token Rewards · Top 315 paid at TGE"
         />
         <Stat
           label="Weekly Winners"
           value="Top 315"
-          sub="$QUIP Points · Every Monday at 1pm UTC"
+          sub="$QUIP points · Every Monday at 1pm UTC"
         />
         <Stat
           label="Season"

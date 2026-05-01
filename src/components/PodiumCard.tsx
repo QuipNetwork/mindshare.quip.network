@@ -73,7 +73,7 @@ export function PodiumCard({ entry, place }: PodiumCardProps) {
           tone={tone}
           label="Weekly rank"
           value={`#${weeklyRank}`}
-          sub={`${weeklyReward.toLocaleString()} $QUIP Points`}
+          sub={`${weeklyReward.toLocaleString()} $QUIP points`}
         />
       </div>
     </a>
