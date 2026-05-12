@@ -2,28 +2,10 @@ import type { ReactNode } from 'react';
 import { Em } from '@/components/Em';
 import { SidebarCard } from '@/components/SidebarCard';
 import { SidebarHeading } from '@/components/SidebarHeading';
+import { QUIP_REWARDS, RANK_REWARDS, rewardRows } from '@/lib/format';
 
-const seasonRewards = [
-  ['1', '$5,000'],
-  ['2', '$4,000'],
-  ['3', '$3,000'],
-  ['4–10', '$2,000'],
-  ['11–25', '$1,000'],
-  ['26–100', '$500'],
-  ['101–315', '$100'],
-] as const;
-
-const weeklyRewards = [
-  ['1', '2,000'],
-  ['2', '1,800'],
-  ['3', '1,600'],
-  ['4–5', '1,400'],
-  ['6–10', '1,200'],
-  ['11–25', '1,000'],
-  ['26–100', '800'],
-  ['101–500', '400'],
-  ['501–1,000', '200'],
-] as const;
+const formatPoints = (n: number) => n.toLocaleString();
+const formatDollars = (n: number) => `$${n.toLocaleString()}`;
 
 export function SeasonRewardsCard() {
   return (
@@ -34,7 +16,7 @@ export function SeasonRewardsCard() {
       <SideSub>Top 315 · $100k in $QUIP at TGE</SideSub>
       <SideTable
         headers={['Rank', 'Reward']}
-        rows={seasonRewards}
+        rows={rewardRows(QUIP_REWARDS, formatDollars)}
         total={['Total', '$100,000']}
       />
     </SidebarCard>
@@ -47,8 +29,11 @@ export function WeeklyRewardsCard() {
       <SidebarHeading>
         Weekly <Em>Points Rewards</Em>
       </SidebarHeading>
-      <SideSub>Distributed every Monday to top 315 users</SideSub>
-      <SideTable headers={['Rank', 'Points']} rows={weeklyRewards} />
+      <SideSub>Distributed every Monday to top 1,000 users</SideSub>
+      <SideTable
+        headers={['Rank', 'Points']}
+        rows={rewardRows(RANK_REWARDS, formatPoints)}
+      />
     </SidebarCard>
   );
 }

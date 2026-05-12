@@ -9,8 +9,10 @@ export const RANK_REWARDS: Map<number, number> = new Map([
   [5, 1400],
   [10, 1200],
   [25, 1000],
-  [100, 800],
-  [500, 400],
+  [50, 800],
+  [100, 600],
+  [250, 400],
+  [500, 300],
   [1000, 200],
 ]);
 
@@ -29,4 +31,20 @@ export function getPointsForRank(rank: number, rewards = RANK_REWARDS): number {
     if (rank <= maxRank) return points;
   }
   return 0;
+}
+
+export function rewardRows(
+  rewards: Map<number, number>,
+  formatValue: (n: number) => string,
+): [string, string][] {
+  let prevMax = 0;
+  return Array.from(rewards, ([maxRank, points]) => {
+    const min = prevMax + 1;
+    const label =
+      min === maxRank
+        ? `${min.toLocaleString()}`
+        : `${min.toLocaleString()}–${maxRank.toLocaleString()}`;
+    prevMax = maxRank;
+    return [label, formatValue(points)];
+  });
 }
