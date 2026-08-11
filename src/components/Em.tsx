@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
 interface EmProps {
@@ -5,9 +6,9 @@ interface EmProps {
   className?: string;
 }
 
-export function Em({ children, className = '' }: EmProps) {
+export function Em({ children, className }: EmProps) {
   return (
-    <em className={`font-normal italic tracking-[-0.04em] ${className}`}>
+    <em className={clsx('font-normal italic tracking-[-0.04em]', className)}>
       {children}
     </em>
   );

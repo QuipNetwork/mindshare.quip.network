@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useLeaderboardStore } from '@/store/leaderboard';
 import { LeaderboardRow } from '@/components/LeaderboardRow';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
@@ -73,7 +74,7 @@ export function LeaderboardTable() {
 function Th({
   children,
   align = 'left',
-  className = '',
+  className,
 }: {
   children: React.ReactNode;
   align?: 'left' | 'right';
@@ -81,9 +82,11 @@ function Th({
 }) {
   return (
     <th
-      className={`select-none whitespace-nowrap px-3 py-3.5 font-mono text-[11px] font-medium uppercase tracking-[0.4px] text-zinc-500 ${
-        align === 'right' ? 'text-right' : 'text-left'
-      } ${className}`}
+      className={clsx(
+        'select-none whitespace-nowrap px-3 py-3.5 font-mono text-[11px] font-medium uppercase tracking-[0.4px] text-zinc-500',
+        align === 'right' ? 'text-right' : 'text-left',
+        className
+      )}
     >
       {children}
     </th>
@@ -94,7 +97,7 @@ function SortableTh({
   active,
   onClick,
   children,
-  className = '',
+  className,
 }: {
   active: boolean;
   onClick: () => void;
@@ -104,9 +107,11 @@ function SortableTh({
   return (
     <th
       onClick={onClick}
-      className={`cursor-pointer select-none whitespace-nowrap px-3 py-3.5 text-left font-mono text-[11px] font-medium uppercase tracking-[0.4px] transition-colors duration-150 ${
-        active ? 'text-zinc-950' : 'text-zinc-500 hover:text-zinc-950'
-      } ${className}`}
+      className={clsx(
+        'cursor-pointer select-none whitespace-nowrap px-3 py-3.5 text-left font-mono text-[11px] font-medium uppercase tracking-[0.4px] transition-colors duration-150',
+        active ? 'text-zinc-950' : 'text-zinc-500 hover:text-zinc-950',
+        className
+      )}
     >
       {children}
       {active && <span className="ml-1 inline-block text-[8px]">▼</span>}

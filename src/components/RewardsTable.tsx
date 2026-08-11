@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import type { ReactNode } from 'react';
 import { Em } from '@/components/Em';
 import { SidebarCard } from '@/components/SidebarCard';
@@ -73,9 +74,14 @@ function SideTable({
           const cellBorder = isLast ? '' : 'border-b border-zinc-150';
           return (
             <tr key={rank}>
-              <td className={`py-[9px] text-zinc-800 ${cellBorder}`}>{rank}</td>
+              <td className={clsx('py-[9px] text-zinc-800', cellBorder)}>
+                {rank}
+              </td>
               <td
-                className={`py-[9px] text-right font-medium text-zinc-950 ${cellBorder}`}
+                className={clsx(
+                  'py-[9px] text-right font-medium text-zinc-950',
+                  cellBorder
+                )}
               >
                 {value}
               </td>
