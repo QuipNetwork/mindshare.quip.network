@@ -47,7 +47,7 @@ function SortButton({
   return (
     <button
       onClick={onClick}
-      className={`px-3 pt-2 pb-[7px] font-mono text-xs uppercase tracking-[0.4px] transition-colors duration-150 ${
+      className={`cursor-pointer px-3 pt-2 pb-[7px] font-mono text-xs uppercase tracking-[0.4px] transition-colors duration-150 ${
         active
           ? 'bg-zinc-950 text-zinc-50'
           : 'bg-transparent text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950'
