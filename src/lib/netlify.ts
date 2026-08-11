@@ -1,63 +1,44 @@
 import { getStore } from '@netlify/blobs';
 
-const FAILED_ATTEMPT_COOLDOWN_MS = 30 * 60 * 1000;
-
-interface CacheMetadata {
-  timestamp?: number;
-  lastFailedAttemptTs?: number;
+export interface CachedValue<T> {
+  data: T;
+  timestamp: number;
 }
 
-export async function remember<T>(
-  storeName: string,
-  key: string,
-  ttlMs: number,
-  fn: () => Promise<T>
-): Promise<T> {
-  const store = getStore(storeName);
+export interface Cache {
+  read<T>(key: string): Promise<CachedValue<T> | undefined>;
+  write<T>(key: string, data: T, timestamp: number): Promise<boolean>;
+  readTimestamp(key: string): Promise<number | undefined>;
+  touch(key: string, timestamp: number): Promise<boolean>;
+}
 
-  const cached = await store
-    .getWithMetadata(key, { type: 'json' })
-    .catch(() => null);
+export function blobCache(storeName: string): Cache {
+  const store = getStore({ name: storeName, consistency: 'strong' });
 
-  const metadata = (cached?.metadata ?? {}) as CacheMetadata;
-  const cachedData = cached?.data as T | undefined;
-  const isFresh =
-    metadata.timestamp !== undefined &&
-    Date.now() - metadata.timestamp < ttlMs;
+  const timestampOf = (metadata: unknown) =>
+    (metadata as { timestamp?: number } | undefined)?.timestamp;
 
-  if (cachedData !== undefined && isFresh) {
-    return cachedData;
-  }
+  const writeValue = async <T>(key: string, data: T, timestamp: number) =>
+    store
+      .setJSON(key, data, { metadata: { timestamp } })
+      .then(() => true)
+      .catch((err: unknown) => {
+        console.error(`Cache write failed for ${key}:`, err);
+        return false;
+      });
 
-  const recentlyFailed =
-    metadata.lastFailedAttemptTs !== undefined &&
-    Date.now() - metadata.lastFailedAttemptTs < FAILED_ATTEMPT_COOLDOWN_MS;
+  return {
+    read: async <T>(key: string) => {
+      const cached = await store.getWithMetadata(key, { type: 'json' });
+      const timestamp = timestampOf(cached?.metadata);
 
-  if (cachedData !== undefined && recentlyFailed) {
-    return cachedData;
-  }
+      if (!cached || timestamp === undefined) return undefined;
 
-  try {
-    const data = await fn();
-    await store
-      .setJSON(key, data, { metadata: { timestamp: Date.now() } })
-      .catch((err: unknown) => console.error('Cache write failed:', err));
-    return data;
-  } catch (err) {
-    if (cachedData !== undefined) {
-      console.error('Upstream fetch failed, serving stale cache:', err);
-      await store
-        .setJSON(key, cachedData, {
-          metadata: {
-            timestamp: metadata.timestamp,
-            lastFailedAttemptTs: Date.now(),
-          },
-        })
-        .catch((writeErr: unknown) =>
-          console.error('Cache metadata write failed:', writeErr)
-        );
-      return cachedData;
-    }
-    throw err;
-  }
+      return { data: cached.data as T, timestamp };
+    },
+    write: writeValue,
+    readTimestamp: async (key: string) =>
+      timestampOf((await store.getMetadata(key))?.metadata),
+    touch: (key: string, timestamp: number) => writeValue(key, null, timestamp),
+  };
 }
