@@ -6,6 +6,7 @@ import {
   UPSTREAM_COOLDOWN_MS,
   type LeaderboardSources,
 } from './leaderboard-cache';
+import { MindshareRequestError } from './mindshare-api';
 import type { Cache, CachedValue } from './netlify';
 import type { LeaderboardEntry } from './types';
 
@@ -171,6 +172,51 @@ describe('loadMergedLeaderboard', () => {
     );
 
     expect(merged[0].mindshare_score).toEqual({ weekly: 1, yearly: 2 });
+  });
+
+  it('logs the whole upstream error when a refresh fails', async () => {
+    const cache = populatedCache(
+      10 * SOURCE_STALE_AFTER_MS,
+      SOURCE_STALE_AFTER_MS - 1
+    );
+    const lines: string[] = [];
+    const failingWeekly = {
+      weekly: () =>
+        Promise.reject(
+          new MindshareRequestError(
+            'https://upstream/quipnetwork/1/2',
+            429,
+            '{"detail":"Rate limit exceeded."}'
+          )
+        ),
+      yearly: async () => [entry('1', 2)],
+    };
+
+    await loadMergedLeaderboard(cache, KEYWORD, failingWeekly, NOW, (line) =>
+      lines.push(line)
+    );
+
+    expect(lines).toHaveLength(1);
+    expect(lines[0]).toContain('mindshare.upstream_request_failed');
+    expect(lines[0]).toContain('source=weekly');
+    expect(lines[0]).toContain('status=429');
+    expect(lines[0]).toContain('Rate limit exceeded');
+    expect(lines[0]).toContain('https://upstream/quipnetwork/1/2');
+  });
+
+  it('logs which sources are missing when unavailable', async () => {
+    const lines: string[] = [];
+
+    await loadMergedLeaderboard(
+      fakeCache(),
+      KEYWORD,
+      fakeSources(),
+      NOW,
+      (line) => lines.push(line)
+    ).catch(() => {});
+
+    expect(lines[0]).toContain('mindshare.leaderboard_unavailable');
+    expect(lines[0]).toContain('missing=yearly');
   });
 
   it('starts the cooldown before calling upstream', async () => {

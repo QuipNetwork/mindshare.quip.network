@@ -8,6 +8,20 @@ export interface MindshareLeaderboardParams {
   excludedUserIds?: string;
 }
 
+export class MindshareRequestError extends Error {
+  readonly url: string;
+  readonly status: number;
+  readonly body: string;
+
+  constructor(url: string, status: number, body: string) {
+    super(`Mindshare API error ${status}`);
+    this.name = 'MindshareRequestError';
+    this.url = url;
+    this.status = status;
+    this.body = body;
+  }
+}
+
 export class MindshareClient {
   static API_BASE =
     'https://uat-mindshare.nucleus.codes/v1/metrics/external/mindshare-leaderboard-v2';
@@ -40,8 +54,8 @@ export class MindshareClient {
     });
 
     if (!res.ok) {
-      const text = await res.text().catch(() => 'Unknown error');
-      throw new Error(`Mindshare API error ${res.status}: ${text}`);
+      const body = await res.text().catch(() => 'Unreadable response body');
+      throw new MindshareRequestError(url.toString(), res.status, body);
     }
 
     return res.json();

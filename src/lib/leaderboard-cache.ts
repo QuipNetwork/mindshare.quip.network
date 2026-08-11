@@ -1,8 +1,16 @@
 import { mergeLeaderboards } from './leaderboard';
 import type { Cache } from './netlify';
+import { consoleErrorSink, logEvent, logFailure, type LogSink } from './log';
 import { selectSourceToRefresh } from './refresh-schedule';
 import type { Respondable } from './http';
 import type { LeaderboardEntry, LeaderboardEntryMerged } from './types';
+
+const LOG_EVENT = {
+  upstreamFailed: 'mindshare.upstream_request_failed',
+  cooldownNotRecorded: 'mindshare.refresh_skipped_cooldown_not_recorded',
+  refreshNotCached: 'mindshare.refresh_not_cached',
+  unavailable: 'mindshare.leaderboard_unavailable',
+} as const;
 
 export const SOURCE_STALE_AFTER_MS = 60 * 60 * 1000;
 export const UPSTREAM_COOLDOWN_MS = 20 * 60 * 1000;
@@ -21,7 +29,6 @@ export class LeaderboardUnavailableError extends Error implements Respondable {
   }
 
   response() {
-    console.error(this.message);
     return new Response(
       JSON.stringify({ error: 'Leaderboard is not available yet' }),
       {
@@ -49,11 +56,12 @@ async function refreshSource(
   keys: ReturnType<typeof cacheKeys>,
   sources: LeaderboardSources,
   name: SourceName,
-  now: number
+  now: number,
+  log: LogSink
 ): Promise<LeaderboardEntry[] | undefined> {
   const cooldownStarted = await cache.touch(keys.lastAttempt, now);
   if (!cooldownStarted) {
-    console.error('Skipping refresh, cooldown could not be recorded');
+    logEvent(LOG_EVENT.cooldownNotRecorded, { source: name }, log);
     return undefined;
   }
 
@@ -61,11 +69,11 @@ async function refreshSource(
     const entries = await sources[name]();
     const stored = await cache.write(keys[name], entries, now);
     if (!stored) {
-      console.error(`Refreshed ${name} leaderboard could not be cached`);
+      logEvent(LOG_EVENT.refreshNotCached, { source: name }, log);
     }
     return entries;
   } catch (err) {
-    console.error(`Upstream fetch failed for ${name} leaderboard:`, err);
+    logFailure(LOG_EVENT.upstreamFailed, err, { source: name }, log);
     return undefined;
   }
 }
@@ -74,7 +82,8 @@ export async function loadMergedLeaderboard(
   cache: Cache,
   keyword: string,
   sources: LeaderboardSources,
-  now: number = Date.now()
+  now: number = Date.now(),
+  log: LogSink = consoleErrorSink
 ): Promise<LeaderboardEntryMerged[]> {
   const keys = cacheKeys(keyword);
 
@@ -106,7 +115,8 @@ export async function loadMergedLeaderboard(
       keys,
       sources,
       refreshable,
-      now
+      now,
+      log
     );
     if (refreshed) entries[refreshable] = refreshed;
   }
@@ -114,7 +124,10 @@ export async function loadMergedLeaderboard(
   const missing = (['weekly', 'yearly'] as const).filter(
     (name) => entries[name] === undefined
   );
-  if (missing.length > 0) throw new LeaderboardUnavailableError(missing);
+  if (missing.length > 0) {
+    logEvent(LOG_EVENT.unavailable, { missing: missing.join(',') }, log);
+    throw new LeaderboardUnavailableError(missing);
+  }
 
   return mergeLeaderboards(entries.weekly ?? [], entries.yearly ?? []);
 }

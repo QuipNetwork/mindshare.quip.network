@@ -2,6 +2,7 @@ import type { Config } from '@netlify/functions';
 import { getNextMondayWave, getPreviousMondayWave } from '../../src/lib/date';
 import { isRespondable, requireMethod } from '../../src/lib/http';
 import { loadMergedLeaderboard } from '../../src/lib/leaderboard-cache';
+import { logFailure } from '../../src/lib/log';
 import { MindshareClient } from '../../src/lib/mindshare-api';
 import { blobCache } from '../../src/lib/netlify';
 
@@ -44,7 +45,7 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonResponse(data);
   } catch (err: unknown) {
     if (isRespondable(err)) return err.response();
-    console.error('Unhandled error:', err);
+    logFailure('leaderboard.unhandled_error', err);
     return jsonResponse({ error: 'Internal server error' }, 500);
   }
 }
