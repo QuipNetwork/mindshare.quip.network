@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useState } from 'react';
 
 type Size = 'sm' | 'md';
@@ -40,14 +41,23 @@ export function Avatar({
         alt=""
         loading="lazy"
         onError={() => setUnreachableSrc(src)}
-        className={`shrink-0 object-cover ${SIZE_CLASS[size]} ${BG_CLASS[tone]}`}
+        className={clsx(
+          'shrink-0 object-cover',
+          SIZE_CLASS[size],
+          BG_CLASS[tone]
+        )}
       />
     );
   }
 
   return (
     <div
-      className={`flex shrink-0 items-center justify-center font-medium ${SIZE_CLASS[size]} ${BG_CLASS[tone]} ${FG_CLASS[tone]}`}
+      className={clsx(
+        'flex shrink-0 items-center justify-center font-medium',
+        SIZE_CLASS[size],
+        BG_CLASS[tone],
+        FG_CLASS[tone]
+      )}
     >
       {name.charAt(0).toUpperCase()}
     </div>

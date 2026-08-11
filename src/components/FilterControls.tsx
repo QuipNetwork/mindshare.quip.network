@@ -1,9 +1,11 @@
+import clsx from 'clsx';
 import { useLeaderboardStore } from '@/store/leaderboard';
 import { FollowCta } from './FollowCta';
 import { SearchBar } from './SearchBar';
 
 export function FilterControls() {
-  const { searchQuery, setSearchQuery, sortBy, setSortBy } = useLeaderboardStore();
+  const { searchQuery, setSearchQuery, sortBy, setSortBy } =
+    useLeaderboardStore();
 
   return (
     <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
@@ -47,11 +49,12 @@ function SortButton({
   return (
     <button
       onClick={onClick}
-      className={`cursor-pointer px-3 pt-2 pb-[7px] font-mono text-xs uppercase tracking-[0.4px] transition-colors duration-150 ${
+      className={clsx(
+        'cursor-pointer px-3 pt-2 pb-[7px] font-mono text-xs uppercase tracking-[0.4px] transition-colors duration-150',
         active
           ? 'bg-zinc-950 text-zinc-50'
           : 'bg-transparent text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950'
-      }`}
+      )}
     >
       {children}
     </button>

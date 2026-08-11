@@ -5,7 +5,8 @@ export const consoleErrorSink: LogSink = (line) => console.error(line);
 const MAX_VALUE_LENGTH = 1000;
 const MAX_CAUSE_DEPTH = 3;
 const LINE_BREAKS = /[\r\n]+\s*/g;
-const SECRET_KEY = /^authorization$|^auth$|api[-_]?key|bearer|token|secret|password/i;
+const SECRET_KEY =
+  /^authorization$|^auth$|api[-_]?key|bearer|token|secret|password/i;
 const SECRET_VALUES: [RegExp, string][] = [
   [/(bearer)(\s+)\S+/gi, '$1$2[redacted]'],
   [
@@ -30,7 +31,8 @@ function stringify(value: unknown): string {
 
 function flatten(value: unknown): string {
   const text = SECRET_VALUES.reduce(
-    (redacted, [pattern, replacement]) => redacted.replace(pattern, replacement),
+    (redacted, [pattern, replacement]) =>
+      redacted.replace(pattern, replacement),
     stringify(value).replace(LINE_BREAKS, ' \\n ')
   );
   return text.length > MAX_VALUE_LENGTH

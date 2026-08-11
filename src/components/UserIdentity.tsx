@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Avatar } from './Avatar';
 
 type Size = 'sm' | 'md';
@@ -35,18 +36,21 @@ export function UserIdentity({
   size = 'sm',
   tone = 'light',
 }: UserIdentityProps) {
-  const wrapperClass = `flex min-w-0 items-center ${GAP_CLASS[size]}`;
+  const wrapperClass = clsx('flex min-w-0 items-center', GAP_CLASS[size]);
   const body = (
     <>
       <Avatar src={src} name={name} size={size} tone={tone} />
       <div className="min-w-0 flex-1">
         <div
-          className={`truncate text-[15px] font-medium leading-tight ${NAME_FG[tone]}`}
+          className={clsx(
+            'truncate text-[15px] font-medium leading-tight',
+            NAME_FG[tone]
+          )}
         >
           {name}
         </div>
         <div
-          className={`mt-0.5 truncate font-mono text-xs ${HANDLE_FG[tone]}`}
+          className={clsx('mt-0.5 truncate font-mono text-xs', HANDLE_FG[tone])}
         >
           @{handle}
         </div>

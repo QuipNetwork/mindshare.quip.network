@@ -16,6 +16,7 @@
     "@netlify/blobs": "^8.2.0",
     "@netlify/functions": "^3.0.4",
     "@tailwindcss/vite": "^4.0.17",
+    "clsx": "^2.1.1",
     "netlify-cli": "^19.1.5",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",

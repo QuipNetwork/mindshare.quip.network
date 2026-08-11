@@ -1,9 +1,6 @@
+import clsx from 'clsx';
 import type { LeaderboardEntryRanked } from '@/lib/types';
-import {
-  formatPercent,
-  getPointsForRank,
-  RANK_REWARDS,
-} from '@/lib/format';
+import { formatPercent, getPointsForRank, RANK_REWARDS } from '@/lib/format';
 import { MedalIcon } from './icons';
 import { UserIdentity } from './UserIdentity';
 
@@ -34,17 +31,26 @@ export function PodiumCard({ entry, place }: PodiumCardProps) {
       href={entry.x_link}
       target="_blank"
       rel="noopener noreferrer"
-      className={`relative flex min-h-[280px] flex-col p-6 transition-colors duration-200 ${cardTheme}`}
+      className={clsx(
+        'relative flex min-h-[280px] flex-col p-6 transition-colors duration-200',
+        cardTheme
+      )}
     >
       <div className="mb-7 flex items-center justify-between">
         <div className="inline-flex items-baseline gap-2.5">
           <span
-            className={`font-display text-[56px] font-medium leading-[0.85] tracking-[-0.04em] ${strong}`}
+            className={clsx(
+              'font-display text-[56px] font-medium leading-[0.85] tracking-[-0.04em]',
+              strong
+            )}
           >
             {String(place).padStart(2, '0')}
           </span>
           <span
-            className={`font-mono text-xs uppercase tracking-[0.4px] ${muted}`}
+            className={clsx(
+              'font-mono text-xs uppercase tracking-[0.4px]',
+              muted
+            )}
           >
             {ORDINALS[place - 1]}
           </span>
@@ -62,7 +68,7 @@ export function PodiumCard({ entry, place }: PodiumCardProps) {
         />
       </div>
 
-      <div className={`grid grid-cols-2 gap-4 border-t pt-5 ${borderTop}`}>
+      <div className={clsx('grid grid-cols-2 gap-4 border-t pt-5', borderTop)}>
         <PodiumMetric
           tone={tone}
           label="Mindshare"
@@ -96,17 +102,22 @@ function PodiumMetric({
   return (
     <div>
       <div
-        className={`mb-1.5 font-mono text-[11px] uppercase tracking-[0.4px] ${muted}`}
+        className={clsx(
+          'mb-1.5 font-mono text-[11px] uppercase tracking-[0.4px]',
+          muted
+        )}
       >
         {label}
       </div>
       <div
-        className={`font-display text-[22px] font-medium leading-none tracking-[-0.02em] ${strong}`}
+        className={clsx(
+          'font-display text-[22px] font-medium leading-none tracking-[-0.02em]',
+          strong
+        )}
       >
         {value}
       </div>
-      <div className={`mt-1 font-mono text-[11px] ${muted}`}>{sub}</div>
+      <div className={clsx('mt-1 font-mono text-[11px]', muted)}>{sub}</div>
     </div>
   );
 }
-
