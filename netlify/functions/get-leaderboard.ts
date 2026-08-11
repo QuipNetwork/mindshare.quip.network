@@ -1,12 +1,12 @@
 import type { Config } from '@netlify/functions';
 import { getNextMondayWave, getPreviousMondayWave } from '../../src/lib/date';
 import { isRespondable, requireMethod } from '../../src/lib/http';
-import { mergeLeaderboards } from '../../src/lib/leaderboard';
+import { loadMergedLeaderboard } from '../../src/lib/leaderboard-cache';
 import { MindshareClient } from '../../src/lib/mindshare-api';
-import { remember } from '../../src/lib/netlify';
+import { blobCache } from '../../src/lib/netlify';
 
-const CACHE_TTL_MS = 60 * 60 * 1000; // 60 minutes
-const CACHE_KEY = 'quipnetwork|merged';
+const KEYWORD = 'quipnetwork';
+const YEARLY_WINDOW_DAYS = 365;
 
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -26,18 +26,18 @@ export default async function handler(request: Request): Promise<Response> {
 
     const client = new MindshareClient(apiKey);
 
-    const data = await remember(
-      'mindshare-cache',
-      CACHE_KEY,
-      CACHE_TTL_MS,
-      async () => {
-        const startTs = Math.floor(getPreviousMondayWave().getTime() / 1000);
-        const endTs = Math.floor(getNextMondayWave().getTime() / 1000);
-        const [weekly, yearly] = await Promise.all([
-          client.fetchLeaderboard({ keyword: 'quipnetwork', startTs, endTs }),
-          client.fetchLeaderboardByDays('quipnetwork', 365),
-        ]);
-        return mergeLeaderboards(weekly, yearly);
+    const data = await loadMergedLeaderboard(
+      blobCache('mindshare-cache'),
+      KEYWORD,
+      {
+        weekly: () =>
+          client.fetchLeaderboard({
+            keyword: KEYWORD,
+            startTs: Math.floor(getPreviousMondayWave().getTime() / 1000),
+            endTs: Math.floor(getNextMondayWave().getTime() / 1000),
+          }),
+        yearly: () =>
+          client.fetchLeaderboardByDays(KEYWORD, YEARLY_WINDOW_DAYS),
       }
     );
 
