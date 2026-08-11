@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 type Size = 'sm' | 'md';
 type Tone = 'light' | 'dark';
 
@@ -23,13 +25,21 @@ const FG_CLASS: Record<Tone, string> = {
   dark: 'text-zinc-50',
 };
 
-export function Avatar({ src, name, size = 'sm', tone = 'light' }: AvatarProps) {
-  if (src) {
+export function Avatar({
+  src,
+  name,
+  size = 'sm',
+  tone = 'light',
+}: AvatarProps) {
+  const [unreachableSrc, setUnreachableSrc] = useState<string | null>(null);
+
+  if (src && src !== unreachableSrc) {
     return (
       <img
         src={src}
         alt=""
         loading="lazy"
+        onError={() => setUnreachableSrc(src)}
         className={`shrink-0 object-cover ${SIZE_CLASS[size]} ${BG_CLASS[tone]}`}
       />
     );
