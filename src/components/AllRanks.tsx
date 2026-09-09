@@ -3,7 +3,7 @@ import { Explanation } from './Explanation';
 import { FilterControls } from './FilterControls';
 import { LeaderboardTable } from './LeaderboardTable';
 import { Page } from './Page';
-import { SeasonRewardsCard, WeeklyRewardsCard } from './RewardsTable';
+import { TokenRewardsCard, WeeklyRewardsCard } from './RewardsTable';
 import { SectionTitle } from './SectionTitle';
 
 export function AllRanks() {
@@ -22,7 +22,7 @@ export function AllRanks() {
           </div>
           <aside className="flex flex-col gap-5 min-[960px]:sticky min-[960px]:top-[84px]">
             <Explanation />
-            <SeasonRewardsCard />
+            <TokenRewardsCard />
             <WeeklyRewardsCard />
           </aside>
         </div>

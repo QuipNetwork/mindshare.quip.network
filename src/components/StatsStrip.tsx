@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Em } from './Em';
 import { Page } from './Page';
 
 export function StatsStrip() {
@@ -7,7 +6,7 @@ export function StatsStrip() {
     <Page>
       <div className="grid grid-cols-1 divide-y divide-zinc-150 border-y border-zinc-200 min-[720px]:grid-cols-3 min-[720px]:divide-x min-[720px]:divide-y-0">
         <Stat
-          label="Season 01 rewards"
+          label="$QUIP rewards"
           value="$100,000"
           sub="in $QUIP Token Rewards · Top 315 paid at TGE"
         />
@@ -16,16 +15,7 @@ export function StatsStrip() {
           value="Top 315"
           sub="$QUIP points · Every Monday at 1pm UTC"
         />
-        <Stat
-          label="Season"
-          value={
-            <>
-              01{' '}
-              <Em className="font-display text-xl text-zinc-500">(live)</Em>
-            </>
-          }
-          sub="Updated hourly"
-        />
+        <Stat label="Leaderboard" value="Live" sub="Updated hourly" />
       </div>
     </Page>
   );

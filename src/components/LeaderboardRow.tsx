@@ -14,9 +14,9 @@ interface LeaderboardRowProps {
 }
 
 export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
-  const seasonRank = entry.rank.yearly + 1;
+  const overallRank = entry.rank.yearly + 1;
   const weeklyRank = entry.rank.weekly + 1;
-  const quipReward = getPointsForRank(seasonRank, QUIP_REWARDS);
+  const quipReward = getPointsForRank(overallRank, QUIP_REWARDS);
   const weeklyReward = getPointsForRank(weeklyRank, RANK_REWARDS);
   const progress =
     topMindshare > 0
@@ -26,7 +26,7 @@ export function LeaderboardRow({ entry, topMindshare }: LeaderboardRowProps) {
   return (
     <tr className="border-b border-zinc-150 transition-colors duration-150 hover:bg-zinc-100">
       <td className="py-4 pl-1 pr-3 font-mono text-sm font-medium tabular-nums text-zinc-950">
-        {String(seasonRank).padStart(2, '0')}
+        {String(overallRank).padStart(2, '0')}
       </td>
       <td className="px-3 py-4">
         <UserIdentity

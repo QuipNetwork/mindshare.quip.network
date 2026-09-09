@@ -9,9 +9,7 @@ export function Hero() {
       <Page>
         <div className="grid grid-cols-1 items-end gap-10 min-[880px]:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] min-[880px]:gap-[clamp(32px,6vw,80px)]">
           <div>
-            <EyebrowLabel>
-              Season 01 &nbsp;|&nbsp; Post. Rank. Earn $QUIP.
-            </EyebrowLabel>
+            <EyebrowLabel>Post. Rank. Earn $QUIP.</EyebrowLabel>
             <h1 className="max-w-[14ch] font-display text-[clamp(40px,calc(4.5vw+15.1px),80px)] font-medium leading-[1.02] tracking-[-0.025em] text-zinc-950">
               Mindshare <Em>leaderboard</Em>
             </h1>
@@ -25,7 +23,7 @@ export function Hero() {
               >
                 @quipnetwork
               </a>
-              . Finish the season in the top 315 to earn $QUIP points, paid at TGE.
+              . Finish in the top 315 to earn $QUIP points, paid at TGE.
             </p>
           </div>
           <Countdown />
