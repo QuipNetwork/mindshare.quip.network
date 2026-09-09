@@ -18,7 +18,7 @@ export function FilterControls() {
           active={sortBy === 'yearly'}
           onClick={() => setSortBy('yearly')}
         >
-          Season
+          Overall
         </SortButton>
         <SortButton
           active={sortBy === 'weekly'}

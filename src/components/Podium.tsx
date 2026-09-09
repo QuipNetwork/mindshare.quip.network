@@ -19,7 +19,7 @@ export function Podium() {
       <Page>
         <div className="mb-7 flex flex-wrap items-end justify-between gap-6">
           <SectionTitle>
-            Top <Em>three</Em> this season
+            Top <Em>three</Em> overall
           </SectionTitle>
           <div className="font-mono text-xs uppercase tracking-[0.4px] text-zinc-500">
             Updated hourly

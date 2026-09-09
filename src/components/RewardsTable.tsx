@@ -8,11 +8,11 @@ import { QUIP_REWARDS, RANK_REWARDS, rewardRows } from '@/lib/format';
 const formatPoints = (n: number) => n.toLocaleString();
 const formatDollars = (n: number) => `$${n.toLocaleString()}`;
 
-export function SeasonRewardsCard() {
+export function TokenRewardsCard() {
   return (
     <SidebarCard tint="mint">
       <SidebarHeading>
-        Season 1 <Em>$QUIP Token Prizes</Em>
+        $QUIP <Em>Token Prizes</Em>
       </SidebarHeading>
       <SideSub>Top 315 · $100k in $QUIP at TGE</SideSub>
       <SideTable
