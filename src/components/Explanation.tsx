@@ -37,8 +37,8 @@ export function Explanation() {
         </Step>
       </ol>
       <div className="mt-4 border-t border-zinc-150 pt-3.5 text-xs leading-[1.45] text-zinc-500">
-        $QUIP rewards are for Season 1. Season 1 ends when the token generation
-        event takes place.
+        $QUIP rewards are distributed when the token generation event takes
+        place.
       </div>
     </SidebarCard>
   );

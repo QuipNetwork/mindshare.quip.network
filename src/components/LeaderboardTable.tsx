@@ -39,7 +39,7 @@ export function LeaderboardTable() {
                 onClick={() => setSortBy('yearly')}
                 className="pl-1"
               >
-                Season Rank
+                Overall Rank
               </SortableTh>
               <Th>User</Th>
               <Th>Mindshare</Th>

@@ -3,7 +3,8 @@ import { FollowCta } from './FollowCta';
 import { SearchBar } from './SearchBar';
 
 export function FilterControls() {
-  const { searchQuery, setSearchQuery, sortBy, setSortBy } = useLeaderboardStore();
+  const { searchQuery, setSearchQuery, sortBy, setSortBy } =
+    useLeaderboardStore();
 
   return (
     <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
@@ -16,7 +17,7 @@ export function FilterControls() {
           active={sortBy === 'yearly'}
           onClick={() => setSortBy('yearly')}
         >
-          Season
+          Overall
         </SortButton>
         <SortButton
           active={sortBy === 'weekly'}
