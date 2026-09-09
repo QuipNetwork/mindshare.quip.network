@@ -60,13 +60,4 @@ export class MindshareClient {
 
     return res.json();
   }
-
-  async fetchLeaderboardByDays(
-    keyword: string,
-    days: number
-  ): Promise<LeaderboardEntry[]> {
-    const endTs = Math.floor(Date.now() / 1000);
-    const startTs = endTs - days * 24 * 60 * 60;
-    return this.fetchLeaderboard({ keyword, startTs, endTs });
-  }
 }

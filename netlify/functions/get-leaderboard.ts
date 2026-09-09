@@ -1,13 +1,11 @@
 import type { Config } from '@netlify/functions';
-import { getNextMondayWave, getPreviousMondayWave } from '../../src/lib/date';
 import { isRespondable, requireMethod } from '../../src/lib/http';
 import { loadMergedLeaderboard } from '../../src/lib/leaderboard-cache';
+import { KEYWORD, YEARLY_WINDOW_DAYS } from '../../src/lib/leaderboard-config';
+import { weeklyWindow, trailingWindow } from '../../src/lib/leaderboard-window';
 import { logFailure } from '../../src/lib/log';
 import { MindshareClient } from '../../src/lib/mindshare-api';
 import { blobCache } from '../../src/lib/netlify';
-
-const KEYWORD = 'quipnetwork';
-const YEARLY_WINDOW_DAYS = 365;
 
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -32,13 +30,12 @@ export default async function handler(request: Request): Promise<Response> {
       KEYWORD,
       {
         weekly: () =>
+          client.fetchLeaderboard({ keyword: KEYWORD, ...weeklyWindow() }),
+        yearly: () =>
           client.fetchLeaderboard({
             keyword: KEYWORD,
-            startTs: Math.floor(getPreviousMondayWave().getTime() / 1000),
-            endTs: Math.floor(getNextMondayWave().getTime() / 1000),
+            ...trailingWindow(YEARLY_WINDOW_DAYS),
           }),
-        yearly: () =>
-          client.fetchLeaderboardByDays(KEYWORD, YEARLY_WINDOW_DAYS),
       }
     );
 
