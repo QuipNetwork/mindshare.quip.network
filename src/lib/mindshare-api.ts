@@ -24,7 +24,7 @@ export class MindshareRequestError extends Error {
 
 export class MindshareClient {
   static API_BASE =
-    'https://uat-mindshare.nucleus.codes/v1/metrics/external/mindshare-leaderboard-v2';
+    'https://api.nucleus.codes/v1/metrics/external/mindshare-leaderboard-v2';
   private readonly apiKey: string;
   private readonly fetch: typeof fetch;
 
