@@ -1,18 +1,17 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Toaster } from 'react-hot-toast';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from '@/App';
 import '@/index.css';
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!;
+const app = (
   <StrictMode>
     <App />
-    <Toaster
-      position="bottom-right"
-      toastOptions={{
-        className: 'toast-base',
-        error: { className: 'toast-base toast-error' },
-      }}
-    />
   </StrictMode>
 );
+
+if (root.hasChildNodes()) {
+  hydrateRoot(root, app);
+} else {
+  createRoot(root).render(app);
+}

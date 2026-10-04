@@ -1,13 +1,23 @@
 import { Layout } from '@/components/Layout';
 import { LeaderboardPage } from '@/pages/LeaderboardPage';
-import { Route, Switch } from 'wouter';
+import { Toaster } from 'react-hot-toast';
+import { Route, Router, Switch } from 'wouter';
 
-export default function App() {
+export default function App({ ssrPath }: { ssrPath?: string }) {
   return (
-    <Switch>
-      <Layout>
-        <Route path="*" component={LeaderboardPage} />
-      </Layout>
-    </Switch>
+    <Router ssrPath={ssrPath}>
+      <Switch>
+        <Layout>
+          <Route path="*" component={LeaderboardPage} />
+        </Layout>
+      </Switch>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: 'toast-base',
+          error: { className: 'toast-base toast-error' },
+        }}
+      />
+    </Router>
   );
 }

@@ -29,7 +29,7 @@ interface LeaderboardState {
 export const useLeaderboardStore = create<LeaderboardState>((set, get) => ({
   entries: [],
   visibleCount: ITEMS_PER_PAGE,
-  loading: false,
+  loading: true,
   error: null,
   searchQuery: '',
   sortBy: 'yearly' as SortBy,

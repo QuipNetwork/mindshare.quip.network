@@ -13,6 +13,11 @@ export function LeaderboardPage() {
   return (
     <>
       <Hero />
+      <noscript>
+        <p className="px-5 py-3 text-center text-sm text-zinc-600">
+          Enable JavaScript to load current rankings and search the leaderboard.
+        </p>
+      </noscript>
       <StatsStrip />
       <Podium />
       <AllRanks />

@@ -7,8 +7,18 @@ export function PrimarySiteHeader() {
     <header className="sticky top-0 z-20 border-b border-zinc-150 bg-zinc-50">
       <Page className="flex items-center justify-between gap-4 py-5">
         <div className="flex min-w-0 items-center gap-3.5">
-          <a href="https://quip.network" aria-label="Quip Network" className="ml-2">
-            <img src={quipLogo} alt="Quip Network" className="block h-[22px] w-auto" />
+          <a
+            href="https://quip.network"
+            aria-label="Quip Network"
+            className="ml-2"
+          >
+            <img
+              src={quipLogo}
+              alt="Quip Network"
+              width="684"
+              height="212"
+              className="block h-[22px] w-auto"
+            />
           </a>
           <span
             aria-hidden="true"
@@ -24,7 +34,10 @@ export function PrimarySiteHeader() {
           <IconLink href="https://x.com/quipnetwork" label="X / Twitter">
             <XIcon className="h-[15px] w-[15px]" />
           </IconLink>
-          <IconLink href="https://discord.com/invite/quipnetwork" label="Discord">
+          <IconLink
+            href="https://discord.com/invite/quipnetwork"
+            label="Discord"
+          >
             <DiscordIcon className="h-[15px] w-[15px]" />
           </IconLink>
           <IconLink href="https://t.me/+Pbld47s3BO44YmUx" label="Telegram">
