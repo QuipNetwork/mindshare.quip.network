@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useLeaderboardStore } from '@/store/leaderboard';
+import { useLeaderboardStore } from '@/store/leaderboard-context';
 import { LeaderboardRow } from '@/components/LeaderboardRow';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ErrorMessage } from '@/components/ErrorMessage';

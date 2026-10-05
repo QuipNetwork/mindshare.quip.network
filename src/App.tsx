@@ -1,16 +1,19 @@
 import { Layout } from '@/components/Layout';
-import { LeaderboardPage } from '@/pages/LeaderboardPage';
+import { LeaderboardPage } from '@/components/LeaderboardPage';
 import { Toaster } from 'react-hot-toast';
-import { Route, Router, Switch } from 'wouter';
+import { LeaderboardProvider } from './store/LeaderboardProvider';
+import type { InitialLeaderboard } from './store/leaderboard';
 
-export default function App({ ssrPath }: { ssrPath?: string }) {
+export default function App({
+  initial = {},
+}: {
+  initial?: InitialLeaderboard;
+}) {
   return (
-    <Router ssrPath={ssrPath}>
-      <Switch>
-        <Layout>
-          <Route path="*" component={LeaderboardPage} />
-        </Layout>
-      </Switch>
+    <LeaderboardProvider initial={initial}>
+      <Layout>
+        <LeaderboardPage />
+      </Layout>
       <Toaster
         position="bottom-right"
         toastOptions={{
@@ -18,6 +21,6 @@ export default function App({ ssrPath }: { ssrPath?: string }) {
           error: { className: 'toast-base toast-error' },
         }}
       />
-    </Router>
+    </LeaderboardProvider>
   );
 }

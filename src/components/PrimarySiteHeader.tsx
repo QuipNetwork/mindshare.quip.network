@@ -1,4 +1,4 @@
-import quipLogo from '../icons/quipnetwork-full-A.svg';
+import quipLogo from '../icons/quipnetwork-full-A.svg?url';
 import { DiscordIcon, TelegramIcon, XIcon } from './icons';
 import { Page } from './Page';
 

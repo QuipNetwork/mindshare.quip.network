@@ -4,24 +4,19 @@
   functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
 
 [dev]
-  command = "bun vite"
+  command = "bun astro dev --host 0.0.0.0"
   framework = "#custom"
   port = 8888
-  targetPort = 5173
+  targetPort = 4321
 
 [dev.environment]
   VITE_APP_URL = "http://localhost:8888"
 
 [context.production.environment]
   VITE_APP_URL = "https://mindshare.quip.network"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
 
 [[headers]]
   for = "/*"
