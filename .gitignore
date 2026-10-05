@@ -30,7 +30,6 @@ dist-ssr
 .netlify
 
 #bun
-bun.lock
 bun.lockb
 
 #npm
