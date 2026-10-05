@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useLeaderboardStore } from '@/store/leaderboard';
+import { useLeaderboardStore } from '@/store/leaderboard-context';
 import { FollowCta } from './FollowCta';
 import { SearchBar } from './SearchBar';
 

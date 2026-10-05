@@ -1,13 +1,26 @@
 import { Layout } from '@/components/Layout';
-import { LeaderboardPage } from '@/pages/LeaderboardPage';
-import { Route, Switch } from 'wouter';
+import { LeaderboardPage } from '@/components/LeaderboardPage';
+import { Toaster } from 'react-hot-toast';
+import { LeaderboardProvider } from './store/LeaderboardProvider';
+import type { InitialLeaderboard } from './store/leaderboard';
 
-export default function App() {
+export default function App({
+  initial = {},
+}: {
+  initial?: InitialLeaderboard;
+}) {
   return (
-    <Switch>
+    <LeaderboardProvider initial={initial}>
       <Layout>
-        <Route path="*" component={LeaderboardPage} />
+        <LeaderboardPage />
       </Layout>
-    </Switch>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: 'toast-base',
+          error: { className: 'toast-base toast-error' },
+        }}
+      />
+    </LeaderboardProvider>
   );
 }

@@ -9,9 +9,9 @@ export function Explainer() {
         <div className="grid grid-cols-1 gap-[clamp(24px,4vw,56px)] border-t border-zinc-200 py-[clamp(48px,5vw,72px)] min-[720px]:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
           <div>
             <EyebrowLabel>How it works</EyebrowLabel>
-            <h3 className="max-w-[14ch] font-display text-[clamp(28px,calc(1.8vw+20px),44px)] font-medium leading-[1.05] tracking-[-0.02em] text-zinc-950">
+            <h2 className="max-w-[14ch] font-display text-[clamp(28px,calc(1.8vw+20px),44px)] font-medium leading-[1.05] tracking-[-0.02em] text-zinc-950">
               Drive the <Em>conversation</Em>. Earn <Em>QUIP</Em>.
-            </h3>
+            </h2>
           </div>
           <div className="grid grid-cols-1 border-t border-zinc-200 min-[720px]:grid-cols-3 min-[720px]:border-t-0 min-[720px]:border-l min-[720px]:divide-x min-[720px]:divide-zinc-200">
             <Step num="Step 01" title="Post on X">
@@ -51,9 +51,9 @@ function Step({
         <span>{num}</span>
         <span className="h-px flex-1 bg-zinc-200" />
       </div>
-      <div className="mb-2 font-display text-xl font-medium leading-[1.15] tracking-[-0.015em] text-zinc-950">
+      <h3 className="mb-2 font-display text-xl font-medium leading-[1.15] tracking-[-0.015em] text-zinc-950">
         {title}
-      </div>
+      </h3>
       <div className="text-sm leading-[1.45] text-zinc-600">{children}</div>
     </div>
   );

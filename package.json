@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "netlify dev --context dev",
-    "build": "vite build",
+    "build": "astro build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
-    "check": "tsc --noEmit",
+    "preview": "netlify serve --context dev",
+    "format": "prettier --plugin prettier-plugin-astro --write \"src/**/*.{ts,tsx,astro,css,md}\"",
+    "check": "astro check && tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "test": "vitest run"
   },
   "dependencies": {
@@ -17,13 +17,16 @@
     "@netlify/functions": "^3.0.4",
     "@tailwindcss/vite": "^4.0.17",
     "clsx": "^2.1.1",
-    "netlify-cli": "^19.1.5",
+    "netlify-cli": "^27.11.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-hot-toast": "^2.5.2",
     "tailwindcss": "^4.0.17",
-    "wouter": "^3.9.0",
-    "zustand": "^5.0.11"
+    "zustand": "^5.0.11",
+    "astro": "^7.3.5",
+    "@astrojs/react": "^7.0.0",
+    "@astrojs/sitemap": "^3.0.0",
+    "@astrojs/netlify": "^8.2.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -31,7 +34,6 @@
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
@@ -40,7 +42,10 @@
     "prettier": "^3.5.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0",
-    "vitest": "^4.1.10"
+    "vite": "^8.0.0",
+    "vitest": "^4.1.10",
+    "@astrojs/check": "^0.9.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

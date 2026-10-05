@@ -1,0 +1,83 @@
+---
+import App from '../App';
+import '../index.css';
+import { getLeaderboard } from '../server/leaderboard';
+import type { InitialLeaderboard } from '../store/leaderboard';
+import { logFailure } from '../lib/log';
+
+let initial: InitialLeaderboard;
+try {
+  const apiKey = process.env.MINDSHARE_API_KEY;
+  if (!apiKey) throw new Error('Missing MINDSHARE_API_KEY');
+  initial = { entries: await getLeaderboard(apiKey) };
+  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=60');
+} catch (error) {
+  logFailure('leaderboard.ssr_error', error);
+  initial = { error: 'Unable to load rankings. Please try again.' };
+  Astro.response.status = 503;
+  Astro.response.headers.set('Cache-Control', 'no-store');
+  Astro.response.headers.set('Retry-After', '60');
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png?v3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="preload"
+      href="/fonts/ABCFavorit-Book.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ABCGaisyr-Medium.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+
+    <!-- Basic Meta Tags -->
+    <title>QUIP Mindshare Leaderboard</title>
+    <meta
+      name="description"
+      content="View QUIP Network mindshare rankings on X, compare weekly and overall scores, and learn how to take part."
+    />
+    <link rel="canonical" href="https://mindshare.quip.network/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mindshare.quip.network/" />
+    <meta property="og:title" content="QUIP Mindshare Leaderboard" />
+    <meta
+      property="og:description"
+      content="View QUIP Network mindshare rankings on X, compare weekly and overall scores, and learn how to take part."
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:url" content="https://mindshare.quip.network/" />
+    <meta name="twitter:title" content="QUIP Mindshare Leaderboard" />
+    <meta
+      name="twitter:description"
+      content="View QUIP Network mindshare rankings on X, compare weekly and overall scores, and learn how to take part."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "QUIP Mindshare Leaderboard",
+        "url": "https://mindshare.quip.network/"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <App initial={initial} client:load />
+    </div>
+  </body>
+</html>

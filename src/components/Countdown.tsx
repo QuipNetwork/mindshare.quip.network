@@ -20,28 +20,29 @@ function computeRemaining(target: Date): CountdownValues {
   };
 }
 
-function useCountdown(getTarget: () => Date): CountdownValues {
-  const [target, setTarget] = useState(getTarget);
-  const [remaining, setRemaining] = useState(() => computeRemaining(target));
+function useCountdown(getTarget: () => Date): CountdownValues | null {
+  const [remaining, setRemaining] = useState<CountdownValues | null>(null);
 
   useEffect(() => {
+    let target = getTarget();
     const tick = () => {
       const now = Date.now();
       if (now >= target.getTime()) {
-        setTarget(getTarget());
+        target = getTarget();
       }
       setRemaining(computeRemaining(target));
     };
 
+    tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [target, getTarget]);
+  }, [getTarget]);
 
   return remaining;
 }
 
 export function Countdown() {
-  const { days, hours, minutes, seconds } = useCountdown(getNextMondayWave);
+  const remaining = useCountdown(getNextMondayWave);
 
   return (
     <div className="flex flex-col gap-2.5 border-t border-zinc-200 pt-5">
@@ -49,14 +50,20 @@ export function Countdown() {
         <span className="inline-block h-2 w-2 animate-pulse-soft rounded-full bg-zinc-950" />
         Next point wave in
       </div>
-      <div className="font-mono text-[clamp(26px,calc(2.5vw+14px),40px)] font-medium leading-[1.1] tracking-[-0.01em] tabular-nums text-zinc-950">
-        <CdNum value={days} unit="d" />
-        <Sep />
-        <CdNum value={hours} unit="h" />
-        <Sep />
-        <CdNum value={minutes} unit="m" />
-        <Sep />
-        <CdNum value={seconds} unit="s" />
+      <div className="min-h-[1.1em] font-mono text-[clamp(26px,calc(2.5vw+14px),40px)] font-medium leading-[1.1] tracking-[-0.01em] tabular-nums text-zinc-950">
+        {remaining ? (
+          <>
+            <CdNum value={remaining.days} unit="d" />
+            <Sep />
+            <CdNum value={remaining.hours} unit="h" />
+            <Sep />
+            <CdNum value={remaining.minutes} unit="m" />
+            <Sep />
+            <CdNum value={remaining.seconds} unit="s" />
+          </>
+        ) : (
+          <span className="text-base">Monday at 1pm UTC</span>
+        )}
       </div>
     </div>
   );

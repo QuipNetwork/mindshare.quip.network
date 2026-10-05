@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { calculateRanks } from '@/lib/leaderboard';
-import { useLeaderboardStore } from '@/store/leaderboard';
+import { useLeaderboardStore } from '@/store/leaderboard-context';
 import { Em } from './Em';
 import { Page } from './Page';
 import { PodiumCard } from './PodiumCard';

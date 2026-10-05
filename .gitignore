@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.astro
 *.local
 
 # Editor directories and files
@@ -34,3 +35,9 @@ bun.lockb
 
 #npm
 package-lock.json
+
+# Local task tracking
+.beads/
+.beads-*/
+.beads-credential-key
+.dolt/

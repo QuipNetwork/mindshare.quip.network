@@ -1,4 +1,4 @@
-import { useLeaderboardStore } from '@/store/leaderboard';
+import { useLeaderboardStore } from '@/store/leaderboard-context';
 import { OutlineButton } from './OutlineButton';
 
 export function LoadMore() {
