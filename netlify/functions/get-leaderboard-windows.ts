@@ -1,10 +1,9 @@
 import type { Config } from '@netlify/functions';
 import { isRespondable, requireMethod } from '../../src/lib/http';
-import { KEYWORD, YEARLY_WINDOW_DAYS } from '../../src/lib/leaderboard-config';
+import { KEYWORD } from '../../src/lib/leaderboard-config';
 import {
+  campaignWindows,
   describeWindows,
-  weeklyWindow,
-  trailingWindow,
 } from '../../src/lib/leaderboard-window';
 import { logFailure } from '../../src/lib/log';
 
@@ -23,10 +22,7 @@ export default function handler(request: Request): Response {
     requireMethod(request, 'GET');
 
     return textResponse(
-      describeWindows(KEYWORD, {
-        weekly: weeklyWindow(),
-        yearly: trailingWindow(YEARLY_WINDOW_DAYS),
-      })
+      describeWindows(KEYWORD, campaignWindows())
     );
   } catch (err: unknown) {
     if (isRespondable(err)) return err.response();

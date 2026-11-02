@@ -1,13 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import {
+  campaignWindows,
   describeWindow,
   describeWindows,
   SECONDS_PER_DAY,
   trailingWindow,
-  weeklyWindow,
 } from './leaderboard-window';
 
-const MONDAY_WAVE_HOUR_UTC = 13;
+describe('campaignWindows', () => {
+  it('pins the weekly and yearly windows to end at the campaign end', () => {
+    expect(campaignWindows(new Date(1793624400000))).toEqual({
+      weekly: { startTs: 1793019600, endTs: 1793624400 },
+      yearly: { startTs: 1762088400, endTs: 1793624400 },
+    });
+  });
+});
 
 describe('trailingWindow', () => {
   it('ends now and starts the requested number of days earlier', () => {
@@ -23,66 +30,6 @@ describe('trailingWindow', () => {
     const { startTs, endTs } = trailingWindow(30, new Date());
 
     expect(endTs - startTs).toBe(30 * SECONDS_PER_DAY);
-  });
-});
-
-describe('weeklyWindow', () => {
-  const isoBoundsAt = (instant: string) => {
-    const { startTs, endTs } = weeklyWindow(new Date(instant));
-    return [
-      new Date(startTs * 1000).toISOString(),
-      new Date(endTs * 1000).toISOString(),
-    ];
-  };
-
-  it.each([
-    [
-      '2026-09-06T23:59:59.000Z',
-      '2026-08-31T13:00:00.000Z',
-      '2026-09-07T13:00:00.000Z',
-    ],
-    [
-      '2026-09-07T12:59:59.000Z',
-      '2026-08-31T13:00:00.000Z',
-      '2026-09-07T13:00:00.000Z',
-    ],
-    [
-      '2026-09-07T13:00:00.000Z',
-      '2026-09-07T13:00:00.000Z',
-      '2026-09-14T13:00:00.000Z',
-    ],
-    [
-      '2026-09-07T13:00:01.000Z',
-      '2026-09-07T13:00:00.000Z',
-      '2026-09-14T13:00:00.000Z',
-    ],
-    [
-      '2026-09-09T16:15:56.000Z',
-      '2026-09-07T13:00:00.000Z',
-      '2026-09-14T13:00:00.000Z',
-    ],
-  ])('at %s spans %s to %s', (instant, expectedStart, expectedEnd) => {
-    expect(isoBoundsAt(instant)).toEqual([expectedStart, expectedEnd]);
-  });
-
-  it('always spans a full week surrounding now', () => {
-    const now = new Date();
-    const nowTs = Math.floor(now.getTime() / 1000);
-    const { startTs, endTs } = weeklyWindow(now);
-
-    expect(endTs - startTs).toBe(7 * SECONDS_PER_DAY);
-    expect(startTs).toBeLessThanOrEqual(nowTs);
-    expect(endTs).toBeGreaterThan(nowTs);
-  });
-
-  it('aligns both bounds to Monday 1PM UTC', () => {
-    const { startTs, endTs } = weeklyWindow();
-
-    for (const boundary of [new Date(startTs * 1000), new Date(endTs * 1000)]) {
-      expect(boundary.getUTCDay()).toBe(1);
-      expect(boundary.getUTCHours()).toBe(MONDAY_WAVE_HOUR_UTC);
-      expect(boundary.getUTCMinutes()).toBe(0);
-    }
   });
 });
 
@@ -107,7 +54,7 @@ describe('describeWindows', () => {
     const report = describeWindows(
       'quipnetwork',
       {
-        weekly: weeklyWindow(new Date('2026-09-09T16:15:56.000Z')),
+        weekly: trailingWindow(7, new Date('2026-09-14T13:00:00.000Z')),
         yearly: trailingWindow(365, new Date('2026-09-09T16:15:56.000Z')),
       },
       new Date('2026-09-09T16:15:57.000Z')

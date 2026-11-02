@@ -1,4 +1,8 @@
-import { getNextMondayWave, getPreviousMondayWave } from './date';
+import {
+  CAMPAIGN_END,
+  WEEKLY_WINDOW_DAYS,
+  YEARLY_WINDOW_DAYS,
+} from './leaderboard-config';
 
 export const SECONDS_PER_DAY = 24 * 60 * 60;
 
@@ -15,19 +19,19 @@ function toIso(unixSeconds: number): string {
   return new Date(unixSeconds * 1000).toISOString();
 }
 
-export function weeklyWindow(now: Date = new Date()): LeaderboardWindow {
-  return {
-    startTs: toUnixSeconds(getPreviousMondayWave(now)),
-    endTs: toUnixSeconds(getNextMondayWave(now)),
-  };
-}
-
 export function trailingWindow(
   days: number,
   now: Date = new Date()
 ): LeaderboardWindow {
   const endTs = toUnixSeconds(now);
   return { startTs: endTs - days * SECONDS_PER_DAY, endTs };
+}
+
+export function campaignWindows(campaignEnd: Date = CAMPAIGN_END) {
+  return {
+    weekly: trailingWindow(WEEKLY_WINDOW_DAYS, campaignEnd),
+    yearly: trailingWindow(YEARLY_WINDOW_DAYS, campaignEnd),
+  };
 }
 
 export function describeWindow(
