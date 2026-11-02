@@ -15,7 +15,7 @@ export function Podium() {
   if (top3.length === 0) return null;
 
   return (
-    <section className="py-[clamp(48px,5vw,72px)]">
+    <section className="pt-[clamp(48px,5vw,72px)]">
       <Page>
         <div className="mb-7 flex flex-wrap items-end justify-between gap-6">
           <SectionTitle>

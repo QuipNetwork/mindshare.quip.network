@@ -10,12 +10,12 @@ export function StatsStrip() {
           value="$100,000"
           sub="in $QUIP Token Rewards · Top 315 paid at TGE"
         />
+        <Stat label="Campaign ended" value="Nov 2" sub="13:00 UTC" />
         <Stat
-          label="Weekly Winners"
-          value="Top 315"
-          sub="$QUIP points · Every Monday at 1pm UTC"
+          label="Points convert"
+          value="At TGE"
+          sub="Based on final leaderboard rank"
         />
-        <Stat label="Leaderboard" value="Live" sub="Updated hourly" />
       </div>
     </Page>
   );

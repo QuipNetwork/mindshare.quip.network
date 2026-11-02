@@ -26,7 +26,7 @@ export function TokenRewardsCard() {
 
 export function WeeklyRewardsCard() {
   return (
-    <SidebarCard tint="lilac">
+    <SidebarCard tint="lilac" archived>
       <SidebarHeading>
         Weekly <Em>Points Rewards</Em>
       </SidebarHeading>
