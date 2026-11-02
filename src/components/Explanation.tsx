@@ -4,7 +4,7 @@ import { SidebarHeading } from '@/components/SidebarHeading';
 
 export function Explanation() {
   return (
-    <SidebarCard tint="yellow">
+    <SidebarCard tint="yellow" archived>
       <SidebarHeading>
         How it <Em>works</Em>
       </SidebarHeading>

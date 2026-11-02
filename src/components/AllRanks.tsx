@@ -8,7 +8,7 @@ import { SectionTitle } from './SectionTitle';
 
 export function AllRanks() {
   return (
-    <section className="pb-[clamp(48px,5vw,72px)]">
+    <section className="py-[clamp(48px,5vw,72px)]">
       <Page>
         <div className="mb-7 flex flex-wrap items-end justify-between gap-6">
           <SectionTitle>
